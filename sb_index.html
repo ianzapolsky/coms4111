@@ -15,8 +15,12 @@
 
     <div class="container">
      
-      <div>
-        <h1 id="main"></h1>
+      <div class="text-centered">
+        <h1>ScheduleBuddy</h1>
+        <form>
+          <input id="form" type="text">
+        </form>
+        <h2 id="main"></h1>
       </div>
 
     </div>
@@ -24,6 +28,8 @@
   </body>
 
   <script>
+    var users = [];
+
     $(document).ready(function () {
       $.ajax({
         url: 'api/get_users.php',
@@ -31,14 +37,27 @@
         async: true,
         dataType: 'json',
         success: function (data) {
-          var users = '';
-          for (var i = 0; i < data.USERNAME.length; i++) {
-            users += '<h1>'+data.USERNAME[i]+'</h1>';
+          for (var i = 0; i < data.length; i++) {
+            users[i] = data[i].USERNAME;
           }
-          $( '#main' ).html(users);
         }
       });
     });
+
+    $( '#form' ).change(function () {
+      var str = $( '#form' ).val();
+      var is_user = false;
+      for (var i = 0; i < users.length; i++) {
+        if (users[i] === str) {
+          is_user = true;
+          break;
+        }
+      }
+      if (is_user) 
+        $( '#main' ).html('...is a user');
+      else
+        $( '#main' ).html('...is not a user');
+    }); 
   </script>
 
 </html>
