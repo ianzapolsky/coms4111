@@ -1,0 +1,46 @@
+<html>
+
+  <head>
+    <title>Schedule Buddy</title>
+    
+    <!-- css -->
+    <link href="css/libs/bootstrap.min.css" rel="stylesheet">
+
+    <!-- js -->
+    <script src="js/libs/jquery-1.11.0.min.js" type="text/javascript"></script>
+    
+  </head>
+
+  <body>
+
+    <div class="container">
+     
+      <div>
+        <h1 id="main"></h1>
+      </div>
+
+    </div>
+
+  </body>
+
+  <script>
+    $(document).ready(function () {
+      $.ajax({
+        url: 'api/get_users.php',
+        type: 'GET',
+        async: true,
+        dataType: 'json',
+        success: function (data) {
+          var users = '';
+          for (var i = 0; i < data.USERNAME.length; i++) {
+            users += '<h1>'+data.USERNAME[i]+'</h1>';
+          }
+          $( '#main' ).html(users);
+        }
+      });
+    });
+  </script>
+
+</html>
+
+    
