@@ -1,9 +1,8 @@
 <?php   
 
 /**
- * get_schedule.php - queries the database for a schedule based on its owner's
- * username which is supplied as a GET variable in the requesting URL. returns
- * JSON representation of the schedule.
+ * get_commitments.php - queries the database for all commitments in a given
+ * schedule, specified by SID in a GET variable in the requesting URL.
  * Ian Zapolsky - 4.1.14
  */ 
 
