@@ -1,10 +1,10 @@
 <?php   
 
 /**
- * get_commitments.php 
- * query the database for all commitments related to some schedule, supplied as
- * a GET variable in the requesting URL. returns associative array of 
- * commitments.
+ * get_schedules.php
+ * query the database for all schedules related to some username, supplied as
+ * a GET variable in the requesting URL. returns associative array of schedules
+ * in JSON.
  */ 
 
 // initialize database connection
@@ -13,13 +13,13 @@ if (!$conn) {
   die('Database not connected!');
 } 
 
-// check for sid
-if (!$_GET['sid']) {
-  die('No schedule provided');
+// check for username
+if (!$_GET['username']) {
+  die('No user provided');
 }
 else {
   // prepare the statement
-  $query = "select * from commitments where sid='" . $_GET['sid'] . "'";
+  $query = "select * from schedules where username='" . $_GET['username'] . "'";
   $stid = oci_parse($conn, $query);
   if (!$stid) {
     die('Statement preparation failed!');

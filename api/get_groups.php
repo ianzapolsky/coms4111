@@ -1,10 +1,10 @@
 <?php 
   
 /**
- * get_users.php
- * query the database for a user based on its username, supplied as a GET
- * variable in the requesting URL. if no GET variable is supplied, query all
- * users. returns associative array of users in JSON.
+ * get_groups.php
+ * query the database for all groups that some user is a member of, where 
+ * username is supplied as a GET variable in the requesting URL. return 
+ * associative array of groups in JSON. 
  */
 
 // initialize database connection
@@ -13,18 +13,14 @@ if (!$conn) {
   die('Database not connected!');
 }
 
-// see if we are querying a specific user. if not, return all users.
-if ($_GET['username']) {
-  // prepare statement
-  $msg = "SELECT * FROM users WHERE username='" . $_GET['username'] . "'";
-  $stid = oci_parse($conn, $msg); 
-  if (!$stid) {
-    die('Statement preparation failed!');
-  }
+// check for username
+if (!$_GET['username']) {
+  die('No username provided!');
 }
 else {
-  // prepare the statement
-  $stid = oci_parse($conn, 'SELECT * FROM users');
+  // prepare statement
+  $msg = "SELECT * FROM groups WHERE gid IN (SELECT gid FROM member_of WHERE username='" . $_GET['username'] . "')";
+  $stid = oci_parse($conn, $msg); 
   if (!$stid) {
     die('Statement preparation failed!');
   }
