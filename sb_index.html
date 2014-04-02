@@ -21,6 +21,11 @@
           <input id="form" type="text">
         </form>
         <h2 id="main"></h1>
+        <form id="create-user"> 
+          <input id="username" type="text" name="username">
+          <input id="password" type="password" name="password">
+          <input type="submit">
+        </form>
       </div>
 
     </div>
@@ -58,6 +63,24 @@
       else
         $( '#main' ).html('...is not a user');
     }); 
+
+    $( '#create-user' ).submit(function(event) {
+      event.preventDefault();
+      // add error catching for empty fields and duplicate to users that
+      // already exist
+      var username = $( '#username' ).val();
+      var password = $( '#password' ).val();
+      var user = {"USERNAME": username, "PASSWORD": password};
+      console.log(user);
+      $.ajax({
+        url: 'api/create_user.php',
+        type: 'POST',
+        data: user,
+        async: false,
+        dataType: 'json',
+      });
+      location.reload();
+    });
   </script>
 
 </html>
