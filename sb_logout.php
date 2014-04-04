@@ -5,4 +5,3 @@ session_destroy();
 header('Location: sb_index.php');
 
 ?>
-  

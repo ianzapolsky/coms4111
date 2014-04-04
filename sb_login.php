@@ -14,4 +14,3 @@ if (empty($_SESSION['username'])) {
 }
 
 ?>
-  
