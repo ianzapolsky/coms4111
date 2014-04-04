@@ -1,8 +1,3 @@
-
-<?php session_start(); ?>
-
-<?php if (empty($_SESSION['username'])): ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,7 +53,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
- 	    <span class="icon-bar"></span>
+ 	        <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">Schedule Buddy</a>
         </div>
@@ -68,28 +63,16 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
-	    <li><a href="#contact">Contact</a></li>
+	        <li><a href="#contact">Contact</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-
-          <form class="navbar-form" role="form" id="create-user">
-<li style="display: inline-block;">
-            <div class="form-group">
-              <input type="text" placeholder="Username" class="form-control" id="username" name="username">
-            </div>
-</li>
-<li style="display: inline-block;">
-            <div class="form-group">
-	      <input type="password" placeholder="Password" class="form-control" id="password" name="password">
-            </div>
-</li>
-<li style="display: inline-block;">
-            <button type="submit" class="btn btn-default">Sign in</button>
-</li>
-          </form>
-
-	  </li></ul>
+	      		 <li>
+				<form class="navbar-form" role="form" id="create-user">
+            			      <button type="submit" class="btn btn-default">Log Out</button>
+          			      	      </form>
+								</li>
+									  </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -97,13 +80,15 @@
     <div class="container">
 
       <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
+      <div class="jumbotron page-header">
         <h1>Schedule Buddy</h1>
 
 	<p>[Image Will Go Here]</p>
-	<p>Having trouble finding a time that works for everyone?</p>
-        <p>Want to quickly and easily find available times to meet with others?</p>
+        <p>
+	Want to quickly and easily find available times to meet with others?
+	</p>
 	<p>Join today to make scheduling meetings easy!</p>
+
         <p>
           <a class="btn btn-lg btn-primary" href="#" role="button">Get Started</a>
         </p>
@@ -125,5 +110,3 @@
   </body>
 
 </html>
-
-<?php endif; ?>    
