@@ -1,8 +1,3 @@
-
-<?php session_start(); ?>
-
-<?php if (empty($_SESSION['username'])): ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
-    <title>Schedule Buddy</title>
+    <title>ScheduleBuddy</title>
     
     <!-- Bootstrap css -->
     <link href="css/libs/bootstrap.min.css" rel="stylesheet">
@@ -24,26 +19,6 @@
 
     <!-- js -->
     <script src="js/libs/jquery-1.11.0.min.js" type="text/javascript"></script>
-    
-<script>
-    $( '#create-user' ).submit(function(event) {
-      event.preventDefault();
-      // add error catching for empty fields and duplicate to users that
-      // already exist
-      var username = $( '#username' ).val();
-      var password = $( '#password' ).val();
-      var user = {"USERNAME": username, "PASSWORD": password};
-      console.log(user);
-      $.ajax({
-        url: 'api/create_user.php',
-        type: 'POST',
-        data: user,
-        async: false,
-        dataType: 'json',
-      });
-      location.reload();
-    });
-</script>
 
   </head>
 
@@ -60,7 +35,7 @@
             <span class="icon-bar"></span>
  	    <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Schedule Buddy</a>
+          <a class="navbar-brand" href="#">ScheduleBuddy</a>
         </div>
 
 	<!-- Navigation Here -->
@@ -98,17 +73,15 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Schedule Buddy</h1>
+        <h1>ScheduleBuddy</h1>
 
-	<p>[Image Will Go Here]</p>
 	<p>Having trouble finding a time that works for everyone?</p>
         <p>Want to quickly and easily find available times to meet with others?</p>
-	<p>Join today to make scheduling meetings easy!</p>
+	<p>Use ScheduleBuddy to make scheduling meetings easy!</p>
         <p>
           <a class="btn btn-lg btn-primary" href="#" role="button">Get Started</a>
         </p>
       </div>
-
     </div> <!-- /container -->
 
     <div id="footer">
@@ -126,4 +99,3 @@
 
 </html>
 
-<?php endif; ?>    

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
-    <title>Schedule Buddy</title>
+    <title>ScheduleBuddy</title>
     
     <!-- Bootstrap css -->
     <link href="css/libs/bootstrap.min.css" rel="stylesheet">
@@ -81,17 +81,9 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron page-header">
-        <h1>Schedule Buddy</h1>
+        <h2>Welcome</h1>
+        <p>Use the navigation above.</p>
 
-	<p>[Image Will Go Here]</p>
-        <p>
-	Want to quickly and easily find available times to meet with others?
-	</p>
-	<p>Join today to make scheduling meetings easy!</p>
-
-        <p>
-          <a class="btn btn-lg btn-primary" href="#" role="button">Get Started</a>
-        </p>
       </div>
 
     </div> <!-- /container -->
