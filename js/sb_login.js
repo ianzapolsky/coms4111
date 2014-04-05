@@ -30,9 +30,9 @@ var sb_login = function() {
 
   // update p element with an error message
   printError = function () {
-    $( '#username' ).addClass('invalid');
+    $( '#uname-div' ).addClass('has-error');
     $( '#username' ).val('Invalid combo');
-    $( '#password' ).addClass('invalid');
+    $( '#pword-div' ).addClass('has-error');
     $( '#password' ).val('');
   };
 
@@ -58,7 +58,6 @@ var sb_login = function() {
 
   // init method: grab all users, and set f
   init = function ($form) {
-    console.log('was initialized!');
     getUsers();
     $form.submit(function (event) {
       checkInput(event);
