@@ -20,6 +20,12 @@
 
     <!-- js -->
     <script src="js/libs/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="js/sb_login.js" type="text/javascript"></script>
+    <script>
+      $(document).ready(function () {
+    sb_login.init($( '#login-form' ))
+         });
+    </script>
 
   </head>
 
@@ -47,25 +53,6 @@
 	        <li><a href="#contact">Contact</a></li>
           </ul>
 
-          <ul class="nav navbar-nav navbar-right">
-
-          <form class="navbar-form" role="form" id="create-user">
-<li style="display: inline-block;">
-            <div class="form-group">
-              <input type="text" placeholder="Username" class="form-control" id="username" name="username">
-            </div>
-</li>
-<li style="display: inline-block;">
-            <div class="form-group">
-	          <input type="password" placeholder="Password" class="form-control" id="password" name="password">
-            </div>
-</li>
-<li style="display: inline-block;">
-            <button type="submit" class="btn btn-default">Sign in</button>
-</li>
-          </form>
-
-	    </li></ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
