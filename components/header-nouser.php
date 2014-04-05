@@ -18,7 +18,6 @@
     <!-- Custom styles for this template -->
     <link href="css/libs/navbar-fixed-top.css" rel="stylesheet">
     <link href="css/libs/sticky-footer.css" rel="stylesheet">
-    <link href="css/sb_base.css" rel="stylesheet">
 
     <!-- js -->
     <script src="js/libs/jquery-1.11.0.min.js" type="text/javascript"></script>
