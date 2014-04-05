@@ -47,7 +47,7 @@
           <ul class="nav navbar-nav navbar-right">
 	          <li>
 						  <form class="navbar-form" action="sb_logout.php" role="form">
-                <button type="submit" class="btn btn-default">Log Out</button>
+                <button type="submit" class="btn btn-danger">Log Out</button>
           		</form>
 					  </li>
           </ul>
