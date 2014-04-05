@@ -45,17 +45,13 @@
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-	        	 	     <li>
-							<form class="navbar-form" role="form" id="create-user">
-            						      			        <button type="submit" class="btn btn-default">Log Out</button>
-          												            	       </form>
-															              </li>
-																                </ul>
+	          <li>
+						  <form class="navbar-form" action="sb_logout.php" role="form">
+                <button type="submit" class="btn btn-default">Log Out</button>
+          		</form>
+					  </li>
+          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
-    <div class="container">
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">

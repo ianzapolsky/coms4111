@@ -30,7 +30,10 @@ var sb_login = function() {
 
   // update p element with an error message
   printError = function () {
-    $( '#error' ).html("Sorry, that's not a valid username/password.");
+    $( '#username' ).addClass('invalid');
+    $( '#username' ).val('Invalid combo');
+    $( '#password' ).addClass('invalid');
+    $( '#password' ).val('');
   };
 
   // clean and check the input from our form
@@ -55,6 +58,7 @@ var sb_login = function() {
 
   // init method: grab all users, and set f
   init = function ($form) {
+    console.log('was initialized!');
     getUsers();
     $form.submit(function (event) {
       checkInput(event);
