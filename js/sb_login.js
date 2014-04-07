@@ -1,6 +1,8 @@
 /**
- * javascript for the Schedule Buddy login form
- * ian zapolsky - 4/4/14
+ * Javascript for the Schedule Buddy login form
+ * COMS 4111
+ *
+ * April 10, 2014
  */
 
 var sb_login = function() {
@@ -55,20 +57,37 @@ var sb_login = function() {
   showCreatePage = function () {
     var html = String()
         + '<div class="jumbotron">'
-          + '<h1>ScheduleBuddy</h1>'
-          + '<p>Enter a username and password to create a new user:</p>'
-          + '<form class="form-signin" id="create-user" method="post">'
-            + '<div id="uname-div">'
+          + '<h2>Create an account:</h2>'
+          + '<br> <form class="form-horizontal" id="create-user" method="post" role="form">'
+            + '<div class="form-group" id="uname-div">'
+            + '<label for="username" class="col-sm-2 control-label">Username</label><div class="col-sm-10">'
               + '<input type="text" class="form-control" placeholder="Username" '
-               + 'id="username" name="username" required autofocus>'
+               + 'id="username" name="username" required autofocus></div>'
             + '</div>'
-            + '<div id="pword-div">'
+            + '<div class="form-group" id="pword-div">'
+              + '<label for="password" class="col-sm-2 control-label">Password</label><div class="col-sm-10">'
               + '<input type="password" class="form-control" placeholder="Password" '
-              + 'id="password" name="password" required>'
+              + 'id="password" name="password" required></div>'
             + '</div>'
-            + '<button class="btn btn-lg btn-primary btn-block" type="submit">Create User</button>'
-          + '</form>'
+            + '<div class="form-group" id="confirm-pword-div">'
+              + '<label for="password" class="col-sm-2 control-label">Confirm Password</label><div class="col-sm-10">'
+              + '<input type="password" class="form-control" placeholder="Password" '
+              + 'id="confirm-password" name="confirm-password" required></div>'
+            + '<div class="registrationFormAlert" id="divCheckPasswordMatch"></div>'
+            + '</div>'
+            + '<p class="text-center">'
+            + '<a href="#" class="btn btn-lg btn-default" ng-click="getstarted = !getstarted" type="reset">&lArr; Go Back</a>  '
+            + '<button class="btn btn-lg btn-primary" type="submit" onclick="alert(\'Passwords do not match!\');">Create User</button>'
+          + '</p></form>'
         + '</div>'
+
+      function checkPasswordMatch() {
+	  var password = $("#password").val();
+	  var confirmPassword = $("#confirm-password").val();
+
+	  if (password != confirmPassword)
+	      alert("Passwords do not match!");
+      }
 
     // update main div with create page html
     $( '#main' ).html(html);
