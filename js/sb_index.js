@@ -51,6 +51,8 @@ var sb_index = function () {
     changePage(newHash);
   };
 
+  changePage =
+
   init = function () {
     $(window)
       .bind('hashchange', onHashChange)

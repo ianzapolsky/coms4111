@@ -22,7 +22,6 @@
     <!-- js -->
     <script src="js/libs/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="js/sb_login.js" type="text/javascript"></script>
-    <script src="js/sb_index.js" type="text/javascript"></script>
 
   </head>
 
