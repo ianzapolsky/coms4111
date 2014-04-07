@@ -18,15 +18,12 @@
 <?php include 'components/header-user.php'; ?>
 
   <div id="main" class="container">
-    <div class="jumbotron">
-      <h1>ScheduleBuddy</h1>
-	    <p>Welcome, <?php echo $_SESSION['username']; ?>!</p>
-    </div>
-  </div> <!-- /container -->
+  </div> 
 
   <script>
     $(document).ready(function () {
-      sb_index.init();
+      var session_username = <?php echo json_encode($_SESSION['username']); ?>;
+      sb_index.init(session_username);
     });
   </script>
 

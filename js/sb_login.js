@@ -6,8 +6,7 @@
 var sb_login = function() {
 
   var
-    unames = [],
-    pwords = [], 
+    users = [],
     
     // methods
     init, printError, checkInput, getUsers, createUser,
@@ -16,7 +15,6 @@ var sb_login = function() {
   // set the contents of the main div to the landing page
   showLandPage = function () {
     var html = String()
-      + '<div id="main" class="container">'
         + '<div class="jumbotron">'
           + '<h1>ScheduleBuddy</h1>'
           + '<div class="row">'
@@ -43,7 +41,6 @@ var sb_login = function() {
             + '</div>'
           + '</div>'
         + '</div>'
-      + '</div> <!-- /container --> ';
     
     // update the main page with land page html
     $( '#main' ).html(html);
@@ -57,7 +54,6 @@ var sb_login = function() {
   // set the contents of the main div to the create user form
   showCreatePage = function () {
     var html = String()
-      + '<div id="main" class="container">'
         + '<div class="jumbotron">'
           + '<h1>ScheduleBuddy</h1>'
           + '<p>Enter a username and password to create a new user:</p>'
@@ -73,7 +69,6 @@ var sb_login = function() {
             + '<button class="btn btn-lg btn-primary btn-block" type="submit">Create User</button>'
           + '</form>'
         + '</div>'
-      + '</div>';
 
     // update main div with create page html
     $( '#main' ).html(html);
@@ -115,8 +110,7 @@ var sb_login = function() {
       dataType: 'json',
       success: function (data) {
         for (var i = 0; i < data.length; i++) {
-          unames[i] = data[i].USERNAME;
-          pwords[i] = data[i].PASSWORD; 
+          users[i] = data[i];
         }
       }
     });
@@ -137,8 +131,8 @@ var sb_login = function() {
       pword = $( '#password' ).val(),
       is_user = false;
 
-    for (var i = 0; i < unames.length; i++) {
-      if (unames[i] === uname && pwords[i] === pword) {
+    for (var i = 0; i < users.length; i++) {
+      if (uname === users[i].USERNAME && pword === users[i].PASSWORD) {
         is_user = true;
         break;
       }
