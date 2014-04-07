@@ -88,7 +88,7 @@ var sb_login = function() {
 
     event.preventDefault();
     $.ajax({
-      url: 'api/create_user.php',
+      url: 'api/post_user.php',
       type: 'POST',
       data: user,
       async: false,
