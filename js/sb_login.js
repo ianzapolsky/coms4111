@@ -10,7 +10,95 @@ var sb_login = function() {
     pwords = [], 
     
     // methods
-    init, printError, checkInput, getUsers;
+    init, printError, checkInput, getUsers,
+    showLandPage, showCreatePage, onHashChange, changePage;
+
+  showLandPage = function () {
+    var html = String()
+      + '<div id="main" class="container">'
+        + '<div class="jumbotron">'
+          + '<h1>ScheduleBuddy</h1>'
+          + '<div class="row">'
+            + '<div class="col-md-8" style="padding: 30px;">'
+              + '<p>Having trouble finding a time that works for everyone?</p>'
+              + '<p>Want to quickly and easily find available times to meet with others?</p>'
+              + '<p>Use ScheduleBuddy to make scheduling meetings easy!</p>'
+              + '<a href="#get-started" id="get-started" class="btn btn-lg btn-success">Get Started &raquo;</a>'
+            + '</div>'
+            + '<div class="col-md-4">'
+              + '<form class="form-signin" id="login-form" action="sb_login.php" method="post">'
+                + '<h2 class="form-signin-heading">Returning Users</h2>'
+                + '<div id="uname-div">'
+                  + '<input type="text" class="form-control" placeholder="Username" id="username" name="username" required autofocus>'
+                + '</div>'
+                + '<div id="pword-div">'
+                  + '<input type="password" class="form-control" placeholder="Password" id="password" name="password" required>'
+                + '</div>'
+                + '<label class="checkbox">'
+                  + '<input type="checkbox" value="remember-me">Remember me'
+                + '</label>'
+                + '<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>'
+              + '</form>'
+            + '</div>'
+          + '</div>'
+        + '</div>'
+      + '</div> <!-- /container --> ';
+    
+    // update the main page with land page html
+    $( '#main' ).html(html);
+  };
+
+  showCreatePage = function () {
+    var html = String()
+      + '<div id="main" class="container">'
+        + '<div class="jumbotron">'
+          + '<h1>ScheduleBuddy</h1>'
+          + '<p>Enter a username and password to create a new user:</p>'
+          + '<form class="form-signin" id="create-user" method="post">'
+            + '<div id="uname-div">'
+              + '<input type="text" class="form-control" placeholder="Username" '
+               + 'id="username" name="username" required autofocus>'
+            + '</div>'
+            + '<div id="pword-div">'
+              + '<input type="password" class="form-control" placeholder="Password" '
+              + 'id="password" name="password" required>'
+            + '</div>'
+            + '<button class="btn btn-lg btn-primary btn-block" type="submit">Create User</button>'
+          + '</form>'
+        + '</div>'
+      + '</div>';
+
+    // update main div with create page html
+    $( '#main' ).html(html);
+
+    // hook create user form to backend
+    $( '#create-user' ).submit(function (event) {
+      event.preventDefault();
+      var username = $( '#username' ).val();
+      var password = $( '#password' ).val();
+      var user = {"USERNAME": username, "PASSWORD": password};
+      console.log(user);
+      $.ajax({
+        url: 'api/create_user.php',
+        type: 'POST',
+        data: user,
+        async: false,
+        dataType: 'json',
+      });
+      changePage('#');
+    });
+  };
+
+  onHashChange = function () {
+    changePage( document.location.hash );
+  };
+
+  changePage = function (newHash) {
+    if (newHash === '#get-started')
+      showCreatePage();
+    else
+      showLandPage();
+  };
 
   // ajax method to grab all the users from the backend
   getUsers = function () {
@@ -28,7 +116,7 @@ var sb_login = function() {
     });
   };
 
-  // update p element with an error message
+  // update form with red error indicators
   printError = function () {
     $( '#uname-div' ).addClass('has-error');
     $( '#username' ).val('Invalid combo');
@@ -62,9 +150,13 @@ var sb_login = function() {
     $form.submit(function (event) {
       checkInput(event);
     });
+    $(window)
+      .bind('hashchange', onHashChange)
+      .trigger('hashchange');
   };
   
   return { init : init };
+          
 
 }();
     

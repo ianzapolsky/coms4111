@@ -6,10 +6,9 @@
 
 var sb_index = function () {
 
-  var displayCreateUser;
+  var onHashChange, displayCreateUser, init;
 
   displayCreateUser = function () {
-    console.log('function fired');
     var html = String()
       + '<div id="main" class="container">'
         + '<div class="jumbotron">'
@@ -30,7 +29,6 @@ var sb_index = function () {
       + '</div>';
  
     $( '#main' ).html(html);
-
     $( '#create-user' ).submit(function (event) {
       event.preventDefault();
       var username = $( '#username' ).val();
@@ -48,6 +46,17 @@ var sb_index = function () {
     });
   };
 
-  return { displayCreateUser:displayCreateUser };
+  onHashChange = function () {
+    var newHash = location.hash;
+    changePage(newHash);
+  };
+
+  init = function () {
+    $(window)
+      .bind('hashchange', onHashChange)
+      .trigger('hashchange');
+  };
+
+  return { init:init };
 
 }();
