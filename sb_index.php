@@ -3,8 +3,8 @@
 <?php if (empty($_SESSION['username'])): ?>
 
 <?php include 'components/header-nouser.php'; ?>
-
-  <div class="container">
+  
+  <div id="main" class="container">
     <div class="jumbotron">
       <h1>ScheduleBuddy</h1>
 
@@ -13,8 +13,16 @@
           <p>Having trouble finding a time that works for everyone?</p>
           <p>Want to quickly and easily find available times to meet with others?</p>
           <p>Use ScheduleBuddy to make scheduling meetings easy!</p>
-          <button class="btn btn-lg btn-success" href="#">Get Started &raquo;</button>
+          <button id="get-started" class="btn btn-lg btn-success">Get Started &raquo;</button>
         </div>
+    
+        <script>
+          $(document).ready(function () {
+            $( '#get-started' ).click(function () {
+              sb_index.displayCreateUser();
+            });
+          });
+        </script>
 
         <div class="col-md-4">
           <form class="form-signin" id="login-form" action="sb_login.php" method="post">
@@ -46,7 +54,7 @@
 
 <?php include 'components/header-user.php'; ?>
 
-  <div class="container">
+  <div id="main" class="container">
     <div class="jumbotron">
       <h1>ScheduleBuddy</h1>
 	    <p>Welcome, <?php echo $_SESSION['username']; ?>!</p>

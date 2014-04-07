@@ -56,7 +56,7 @@ var sb_login = function() {
     }
   };
 
-  // init method: grab all users, and set f
+  // init method: grab all users, and set form behavior
   init = function ($form) {
     getUsers();
     $form.submit(function (event) {
