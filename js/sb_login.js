@@ -164,7 +164,7 @@ var sb_login = function() {
   };
 
   // init method: grab all users, and set form behavior
-  init = function ($form) {
+  init = function () {
     // get users asynchronously on page load so that we don't have to wait to
     // check if a user's credentials are valid later
     getUsers();
