@@ -23,9 +23,10 @@ var sb_index = function () {
   // methods
   init, convertDay, onHashChange, changePage,
   // ajax
-  getBuddies, getSchedules, getCommitments,
+  getBuddies, getSchedules, getCommitments, postBuddy,
   // these are all the pages we would like to implement
-    showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, showSchedulePage;
+  showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
+  showSchedulePage;
 
   showLandPage = function () {
     var html = String()
@@ -41,71 +42,84 @@ var sb_index = function () {
     $( '#main' ).html(html);
   };
 
-    showBuddyPage = function () {
-	var html = String() 
+  showBuddyPage = function () {
+    getBuddies();
+	  var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Your Buddies</h3><br>'
       + '<p class="text-right"><a href="#addbuddy" type="button" class="btn btn-default">Add Buddy</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
-	+ '<table class="table table-striped"><thead>'
-	+ '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
-        + ' <tr>'
-            + '<th>#</th>'
-            + '<th>Username</th>'
-	    + '<th> </th>'
-        + ' </tr>'
+	        + '<table class="table table-striped"><thead>'
+	          + '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
+            + ' <tr>'
+              + '<th>#</th>'
+              + '<th>Username</th>'
+	            + '<th> </th>'
+            + ' </tr>'
             + '</thead> <tbody>';
-	for (var i = 0; i < buddies.length; i++){
-	    html += '<tr><td>' + (i+1) + '</td> <td>' + buddies[i].USERNAME+'</td><td>';
+	  for (var i = 0; i < buddies.length; i++) {
+	    html += '<tr><td>'+(i+1)+'</td> <td>'+buddies[i].USERNAME+'</td><td>';
 	    html += '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Options <span class="caret"></span></button>';
 	    html += '<ul class="dropdown-menu" role="menu">';
 	    html += '<li><a href="#">View Schedule</a></li>';
 	    html += '<li><a href="#">Send Invite</a></li>';
 	    html += '<li class="divider"></li>';
-	    html += '<li><a href="#">Delete Buddy</a></li>';
+	    html += '<li><a href="#buddies" id="'+buddies[i].USERNAME+'" class="delete-buddy">Delete Buddy</a></li>';
 	    html += '</ul></div></td></tr>';
-	}
-	html += '</tbody></table></div></div>';
-	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
-    
+	  }
+	  html += '</tbody></table></div></div>';
+	  html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+
     // update the main page with buddy page html
-	$( '#main' ).html(html);
-    };
+	  $( '#main' ).html(html);
+  
+    $( '.delete-buddy' ).click(function () {
+      var username2 = $(this).attr("id");
+      $.ajax({
+        url: 'api/delete_buddy.php?username1='+username+'&username2='+username2+'',
+        type: 'GET',
+        async: false,
+      });
+      document.location.reload();
+    });
+  };
 
     showAddBuddyPage = function () {
-	var html = String() 
-      + '<div class="jumbotron">'
-      + '<h3>Add Buddies</h3><br>'
-	+ '<p class="text-right">'
-	+ '<input type="text" class="form-control">'
-	+ '<span class="input-group-btn"><button class="btn btn-default" type="button">Search User</button></span>'
-	+ '<!-- /.row --></p>'
-      + '<br><div class="panel panel-default">'
+      getUsers();
+	    var html = String() 
+        + '<div class="jumbotron">'
+          + '<h3>Add Buddies</h3><br>'
+	        + '<p class="text-right">'
+      + '<div class="panel panel-default">'
         + '<div class="panel-body">'
-	+ '<table class="table table-striped"><thead>'
-	+ '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
+	    + '<table class="table table-striped"><thead>'
+	    + '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
         + ' <tr>'
             + '<th>#</th>'
             + '<th>Username</th>'
-	    + '<th> </th>'
+	      + '<th> </th>'
         + ' </tr>'
             + '</thead> <tbody>';
-	for (var i = 0; i < users.length; i++){
-	    //if(buddies.indexOf(users[i].USERNAME+) > -1){ << this code does not work
-		html += '<tr><td>' + (i+1) + '</td> <td>' + users[i].USERNAME+'</td><td>';
-		html += '<a href="#" type="button" class="btn btn-default">Add Buddy</a>';
-	    //}
-	}
-	html += '</tbody></table></div></div>';
-	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+	  for (var i = 0; i < users.length; i++){
+		  html += '<tr><td>' + (i+1) + '</td> <td>' + users[i].USERNAME+'</td><td>';
+		  html += '<a id="'+users[i].USERNAME+'" type="button" class="add-buddy btn btn-default">Add Buddy</a>';
+	  }
+	  html += '</tbody></table></div></div>';
+	  html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
     
     // update the main page with buddy page html
-	$( '#main' ).html(html);
-    };
+	  $( '#main' ).html(html);
 
+    $( '.add-buddy' ).click(function () {
+      var username1 = username;
+      var username2 = $(this).attr("id");
+      postBuddy(username1,username2);
+      document.location.hash = '#buddies';
+    }); 
+  };
 
-    showScheduleSelectPage = function () {
+  showScheduleSelectPage = function () {
     var html = String() 
       + '<div class="jumbotron">'
         + '<h1><a href="#">ScheduleBuddy</a></h1>'
@@ -148,7 +162,7 @@ var sb_index = function () {
     $.ajax({
       url: 'api/get_buddies.php?username='+username+'',
       type: 'GET',
-      async: true,
+      async: false,
       dataType: 'json',
       success: function (data) {
         for (var i = 0; i < data.length; i++)
@@ -158,7 +172,7 @@ var sb_index = function () {
   };
 
   // ajax method to GET all the schedules of the logged-in user from backend
-  getSchedules = function () {
+  getSchedules = function (async_control) {
     $.ajax({
       url: 'api/get_schedules.php?username='+username+'',
       type: 'GET',
@@ -188,21 +202,31 @@ var sb_index = function () {
     });
   };
 
-
   // ajax method to GET all the users from the backend
-    getUsers = function () {
-	$.ajax({
+  getUsers = function (async_control) {
+	  $.ajax({
 	    url: 'api/get_users.php',
 	    type: 'GET',
-	    async: true,
+	    async: false,
 	    dataType: 'json',
 	    success: function (data) {
-		for (var i = 0; i < data.length; i++) {
-		    users[i] = data[i];
-		}
+		    for (var i = 0; i < data.length; i++) {
+		      users[i] = data[i];
+		    }
 	    }
-	});
-    };
+	  });
+  };
+
+  postBuddy = function (username1, username2) {
+    var buddy = {'USERNAME1': username1, 'USERNAME2': username2};
+
+    $.ajax({
+      url: 'api/post_buddy.php',
+      type: 'POST',
+      async: false,
+      data: buddy,
+    });
+  };
 
   convertDay = function (day_num) {
     switch (day_num) {

@@ -1,7 +1,7 @@
 <?php 
   
 /**
- * delete_buddies.php
+ * delete_buddy.php
  * delete a row from the is_buddy table, destroying the buddy relationship 
  * between username1 and username2, passed as GET URL parameters.
  */
