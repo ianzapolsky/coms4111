@@ -37,18 +37,29 @@ var sb_index = function () {
     $( '#main' ).html(html);
   };
 
-  showBuddyPage = function () {
-    var html = String() 
+    showBuddyPage = function () {
+	var html = String() 
       + '<div class="jumbotron">'
-        + '<h1><a href="#">ScheduleBuddy</a></h1>'
-        + '<h3>Buddies</p>'
-        + '<ul>';
-    for (var i = 0; i < buddies.length; i++)
-      html += '<li>'+buddies[i].USERNAME+'</li>';
-    html += '</ul></div>';
+      + '<h3>Your Buddies</h3><br>'
+      + '<div class="panel panel-default">'
+        + '<div class="panel-body">'
+	+ '<table class="table"><thead>'
+        + ' <tr>'
+            + '<th>#</th>'
+            + '<th>Username</th>'
+        + ' </tr>'
+            + '</thead> <tbody>';
+	for (var i = 0; i < buddies.length; i++){
+	    html += '<tr><td>' + (i+1) + '</td> <td>' + buddies[i].USERNAME+'</td>';
+	    html += '<td>h<ul class="dropdown-menu" role="menu"><li><a href="#">View Schedule</a></li><li><a href="#">Send Invite</a></li><li class="divider"></li><li><a href="#">Remove Buddy</a></li></ul></td>i</tr>';
+	}
+	html += '</tbody></table></div></div>';
+	html += '<a href="#" class="btn btn-lg btn-default" ng-click="getstarted = !getstarted" type="reset">&lArr; Go Back</a></div>';
+    
     // update the main page with buddy page html
-    $( '#main' ).html(html);
-  };
+	$( '#main' ).html(html);
+    };
+
     
   showScheduleSelectPage = function () {
     var html = String() 

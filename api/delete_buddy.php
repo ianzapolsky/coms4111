@@ -18,7 +18,8 @@ if (!$_GET['username1'] || !$_GET['username2']) {
 }
 else {
   // prepare statement
-  $msg = "DELETE FROM is_buddy where username1='" . $_GET['username1'] . "' and username2='" . $_GET['username2'] . "'";
+  $msg = "DELETE FROM is_buddy WHERE (username1='" . $_GET['username1'] . "' AND username2='" . $_GET['username2'] . "' ) OR (username2='" . $_GET['username'] . "' AND username1='" . $_GET['username2'] . "' )";
+  
   $stid = oci_parse($conn, $msg); 
   if (!$stid) {
     die('Statement preparation failed!');
