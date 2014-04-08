@@ -19,6 +19,9 @@
     <link href="css/libs/navbar-fixed-top.css" rel="stylesheet">
     <link href="css/libs/sticky-footer.css" rel="stylesheet">
 
+    <!-- Bootstrap JS -->
+    <script href="js/libs/bootstrap.min.js" type="text/javascript"></script>
+
     <!-- js -->
     <script src="js/libs/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="js/sb_login.js" type="text/javascript"></script>

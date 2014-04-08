@@ -9,7 +9,6 @@
     <meta name="author" content="">
     
     <title>ScheduleBuddy</title>
-    
     <!-- Bootstrap css -->
     <link href="css/libs/bootstrap.min.css" rel="stylesheet">
 
@@ -20,7 +19,6 @@
     <!-- js -->
     <script src="js/libs/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="js/sb_index.js" type="text/javascript"></script>
-
   <body>
 
     <!-- Fixed navbar -->
@@ -42,15 +40,15 @@
           <ul class="nav navbar-nav">
             <li><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
-	            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-	          <li>
-						  <form class="navbar-form" action="sb_logout.php" role="form">
-                <button type="submit" class="btn btn-danger">Log Out</button>
-          		</form>
-					  </li>
+	    <li>
+	      <form class="navbar-form" action="sb_logout.php" role="form">
+              <button type="submit" class="btn btn-danger">Log Out</button>
+              </form>
+	    </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

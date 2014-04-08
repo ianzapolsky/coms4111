@@ -1,7 +1,9 @@
 /**
  * sb_index.js
  * js for schedule buddy index
- * by Ian Zapolsky - 4/6/14
+ * COMS 4111
+ *
+ * April 10, 2014
  */
 
 var sb_index = function () {
@@ -43,18 +45,26 @@ var sb_index = function () {
       + '<h3>Your Buddies</h3><br>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
-	+ '<table class="table"><thead>'
+	+ '<table class="table table-hover"><thead>'
+	+ '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
         + ' <tr>'
             + '<th>#</th>'
             + '<th>Username</th>'
+	    + '<th> </th>'
         + ' </tr>'
             + '</thead> <tbody>';
 	for (var i = 0; i < buddies.length; i++){
-	    html += '<tr><td>' + (i+1) + '</td> <td>' + buddies[i].USERNAME+'</td>';
-	    html += '<td>h<ul class="dropdown-menu" role="menu"><li><a href="#">View Schedule</a></li><li><a href="#">Send Invite</a></li><li class="divider"></li><li><a href="#">Remove Buddy</a></li></ul></td>i</tr>';
+	    html += '<tr><td>' + (i+1) + '</td> <td>' + buddies[i].USERNAME+'</td><td>';
+	    html += '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Options <span class="caret"></span></button>';
+	    html += '<ul class="dropdown-menu" role="menu">';
+	    html += '<li><a href="#">View Schedule</a></li>';
+	    html += '<li><a href="#">Send Invite</a></li>';
+	    html += '<li class="divider"></li>';
+	    html += '<li><a href="#">Delete Buddy</a></li>';
+	    html += '</ul></div></td></tr>';
 	}
 	html += '</tbody></table></div></div>';
-	html += '<a href="#" class="btn btn-lg btn-default" ng-click="getstarted = !getstarted" type="reset">&lArr; Go Back</a></div>';
+	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
     
     // update the main page with buddy page html
 	$( '#main' ).html(html);

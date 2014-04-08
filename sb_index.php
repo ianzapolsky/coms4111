@@ -18,7 +18,8 @@
 <?php include 'components/header-user.php'; ?>
 
   <div id="main" class="container">
-  </div> 
+  <!-- page html goes here -->
+  </div>
 
   <script>
     $(document).ready(function () {
