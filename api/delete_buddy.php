@@ -18,7 +18,7 @@ if (!$_GET['username1'] || !$_GET['username2']) {
 }
 else {
   // prepare statement
-  $msg = "DELETE FROM is_buddy WHERE (username1='" . $_GET['username1'] . "' AND username2='" . $_GET['username2'] . "' ) OR (username2='" . $_GET['username'] . "' AND username1='" . $_GET['username2'] . "' )";
+  $msg = "DELETE FROM is_buddy WHERE (username1='" . $_GET['username1'] . "' AND username2='" . $_GET['username2'] . "' ) OR (username1='" . $_GET['username2'] . "' AND username2='" . $_GET['username1'] . "' )";
   
   $stid = oci_parse($conn, $msg); 
   if (!$stid) {

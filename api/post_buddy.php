@@ -20,14 +20,27 @@ else {
   die('Incomplete data!');
 }
 
-// prepare statement
+// prepare statement 1
 $msg = "insert into is_buddy values ('" . $username1 . "', '" . $username2 . "')";
 $stid = oci_parse($conn, $msg); 
 if (!$stid) {
   die('Statement preparation failed!');
 }
 
-// perform the logic of the query
+// perform the logic of statement 1
+$r = oci_execute($stid);
+if (!$r) {
+  die('Logic performance failed!');
+}
+
+// prepare statement 2
+$msg = "insert into is_buddy values ('" . $username2 . "', '" . $username1 . "')";
+$stid = oci_parse($conn, $msg); 
+if (!$stid) {
+  die('Statement preparation failed!');
+}
+
+// perform the logic of statement 2
 $r = oci_execute($stid);
 if (!$r) {
   die('Logic performance failed!');
