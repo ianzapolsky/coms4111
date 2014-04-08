@@ -35,7 +35,7 @@ var sb_index = function () {
           + '<h3>Welcome, '+username+'!</p>'
           + '<ul>'
             +'<li><a href="#buddies">Buddies</a></li>'
-            +'<li><a href="#schedules">Schedules</a></li>'
+            +'<li><a href="#schedules?username='+username+'">Schedules</a></li>'
           + '</ul>'
         + '</div>'
     // update the main page with land page html
@@ -62,7 +62,7 @@ var sb_index = function () {
 	    html += '<tr><td>'+(i+1)+'</td> <td>'+buddies[i].USERNAME+'</td><td>';
 	    html += '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Options <span class="caret"></span></button>';
 	    html += '<ul class="dropdown-menu" role="menu">';
-	    html += '<li><a href="#">View Schedule</a></li>';
+	    html += '<li><a href="#schedules?username='+buddies[i].USERNAME+'">View Schedules</a></li>';
 	    html += '<li><a href="#">Send Invite</a></li>';
 	    html += '<li class="divider"></li>';
 	    html += '<li><a href="#buddies" id="'+buddies[i].USERNAME+'" class="delete-buddy">Delete Buddy</a></li>';
@@ -120,6 +120,9 @@ var sb_index = function () {
   };
 
   showScheduleSelectPage = function () {
+    var hash = window.location.hash;
+    var uname = hash.substr(hash.indexOf('=')+1);
+    getSchedules(uname);
     var html = String() 
       + '<div class="jumbotron">'
         + '<h1><a href="#">ScheduleBuddy</a></h1>'
@@ -172,11 +175,11 @@ var sb_index = function () {
   };
 
   // ajax method to GET all the schedules of the logged-in user from backend
-  getSchedules = function (async_control) {
+  getSchedules = function (uname) {
     $.ajax({
-      url: 'api/get_schedules.php?username='+username+'',
+      url: 'api/get_schedules.php?username='+uname+'',
       type: 'GET',
-      async: true,
+      async: false,
       dataType: 'json',
       success: function (data) {
         for (var i = 0; i < data.length; i++)
@@ -219,7 +222,6 @@ var sb_index = function () {
 
   postBuddy = function (username1, username2) {
     var buddy = {'USERNAME1': username1, 'USERNAME2': username2};
-
     $.ajax({
       url: 'api/post_buddy.php',
       type: 'POST',
@@ -252,9 +254,9 @@ var sb_index = function () {
       showBuddyPage();
     else if(newHash === '#addbuddy')
       showAddBuddyPage();
-    else if (newHash === '#schedules')
+    else if (newHash.substr(0,20) === '#schedules?username=')
       showScheduleSelectPage();
-    else if (newHash.substr(0,11) === '#schedules?')
+    else if (newHash.substr(0,15) === '#schedules?sid=')
       showSchedulePage();
     else
       showLandPage();
@@ -265,8 +267,6 @@ var sb_index = function () {
     username = session_username;
     
     // add asynchronous events here
-      getBuddies();
-      getSchedules();
       getUsers();
     // bind onHashChange method to the hashchange window event and trigger it
     // to load the necessary html
