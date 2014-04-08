@@ -17,13 +17,15 @@ var sb_index = function () {
     schedules = [],
     // list of commitments for the currently viewed schedule
     commitments = [],
+    // list of users
+    users = [],
 
   // methods
   init, convertDay, onHashChange, changePage,
   // ajax
   getBuddies, getSchedules, getCommitments,
   // these are all the pages we would like to implement
-  showLandPage, showBuddyPage, showScheduleSelectPage, showSchedulePage;
+    showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, showSchedulePage;
 
   showLandPage = function () {
     var html = String()
@@ -43,9 +45,10 @@ var sb_index = function () {
 	var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Your Buddies</h3><br>'
+      + '<p class="text-right"><a href="#addbuddy" type="button" class="btn btn-default">Add Buddy</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
-	+ '<table class="table table-hover"><thead>'
+	+ '<table class="table table-striped"><thead>'
 	+ '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
         + ' <tr>'
             + '<th>#</th>'
@@ -70,8 +73,39 @@ var sb_index = function () {
 	$( '#main' ).html(html);
     };
 
+    showAddBuddyPage = function () {
+	var html = String() 
+      + '<div class="jumbotron">'
+      + '<h3>Add Buddies</h3><br>'
+	+ '<p class="text-right">'
+	+ '<input type="text" class="form-control">'
+	+ '<span class="input-group-btn"><button class="btn btn-default" type="button">Search User</button></span>'
+	+ '<!-- /.row --></p>'
+      + '<br><div class="panel panel-default">'
+        + '<div class="panel-body">'
+	+ '<table class="table table-striped"><thead>'
+	+ '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
+        + ' <tr>'
+            + '<th>#</th>'
+            + '<th>Username</th>'
+	    + '<th> </th>'
+        + ' </tr>'
+            + '</thead> <tbody>';
+	for (var i = 0; i < users.length; i++){
+	    //if(buddies.indexOf(users[i].USERNAME+) > -1){ << this code does not work
+		html += '<tr><td>' + (i+1) + '</td> <td>' + users[i].USERNAME+'</td><td>';
+		html += '<a href="#" type="button" class="btn btn-default">Add Buddy</a>';
+	    //}
+	}
+	html += '</tbody></table></div></div>';
+	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
     
-  showScheduleSelectPage = function () {
+    // update the main page with buddy page html
+	$( '#main' ).html(html);
+    };
+
+
+    showScheduleSelectPage = function () {
     var html = String() 
       + '<div class="jumbotron">'
         + '<h1><a href="#">ScheduleBuddy</a></h1>'
@@ -154,6 +188,22 @@ var sb_index = function () {
     });
   };
 
+
+  // ajax method to GET all the users from the backend
+    getUsers = function () {
+	$.ajax({
+	    url: 'api/get_users.php',
+	    type: 'GET',
+	    async: true,
+	    dataType: 'json',
+	    success: function (data) {
+		for (var i = 0; i < data.length; i++) {
+		    users[i] = data[i];
+		}
+	    }
+	});
+    };
+
   convertDay = function (day_num) {
     switch (day_num) {
       case 1: 
@@ -176,6 +226,8 @@ var sb_index = function () {
   changePage = function (newHash) {
     if (newHash === '#buddies')
       showBuddyPage();
+    else if(newHash === '#addbuddy')
+      showAddBuddyPage();
     else if (newHash === '#schedules')
       showScheduleSelectPage();
     else if (newHash.substr(0,11) === '#schedules?')
@@ -189,9 +241,9 @@ var sb_index = function () {
     username = session_username;
     
     // add asynchronous events here
-    getBuddies();
-    getSchedules();
-
+      getBuddies();
+      getSchedules();
+      getUsers();
     // bind onHashChange method to the hashchange window event and trigger it
     // to load the necessary html
     $(window)

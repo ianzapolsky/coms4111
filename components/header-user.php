@@ -15,6 +15,8 @@
     <!-- Custom styles for this template -->
     <link href="css/libs/navbar-fixed-top.css" rel="stylesheet">
     <link href="css/libs/sticky-footer.css" rel="stylesheet">
+    <link href="css/libs/calendar.css" rel="stylesheet">
+
 
     <!-- js -->
     <script src="js/libs/jquery-1.11.0.min.js" type="text/javascript"></script>
@@ -41,6 +43,13 @@
             <li><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#buddies" class="dropdown-toggle" data-toggle="dropdown">Buddies <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#buddies">View Buddies</a></li>
+                <li><a href="#addbuddy">Add Buddy</a></li>
+              </ul>
+            </li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">

@@ -77,7 +77,7 @@ var sb_login = function() {
             + '</div>'
             + '<p class="text-center">'
             + '<a href="#" class="btn btn-lg btn-default" ng-click="getstarted = !getstarted" type="reset">&lArr; Go Back</a>  '
-            + '<button class="btn btn-lg btn-primary" type="submit" onclick="alert(\'Passwords do not match!\');">Create User</button>'
+            + '<button class="btn btn-lg btn-primary" type="submit" onclick="checkPasswordMatch()">Create User</button>'
           + '</p></form>'
         + '</div>'
 
