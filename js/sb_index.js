@@ -17,9 +17,7 @@ var sb_index = function () {
     schedules = [],
     // list of commitments for the currently viewed schedule
     commitments = [],
-    // list of groups of the logged-in user
-    usergroups = [],
-    // list of all groups
+    // list of groups for the currently viewed user
     groups = [],
     // list of users
     users = [],
@@ -27,18 +25,19 @@ var sb_index = function () {
   // methods
     init, convertDay, onHashChange, changePage,
   // ajax
-    getBuddies, getSchedules, getCommitments, getGroups, getUserGroups, postBuddy,
+    getBuddies, getSchedules, getCommitments, getGroups, postBuddy,
   // these are all the pages we would like to implement
     showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
-    showSchedulePage;
+    showSchedulePage, showGroupPage;
 
     showLandPage = function () {
 	var html = String()
         + '<div class="jumbotron">'
           + '<h1>Welcome, '+username+'!</h1>'
-          + '<ul>'
+          + '<ul class="list-unstyled" style="margin-left: 20px;">'
             +'<li><h2><a href="#buddies">Buddies</a></h2></li>'
 	    +'<li><h2><a href="#schedules?username='+username+'">Schedules</a></h2></li>'
+	    +'<li><h2><a href="#groups?username=' + username + '"">Groups</a></h2></li>'
           + '</ul>'
         + '</div>'
     // update the main page with land page html
@@ -195,8 +194,11 @@ var sb_index = function () {
 	$( '#main' ).html(html);
     };
 
-    showUserGroupsPage = function () {
-	getUserGroups();
+    showGroupPage = function () {
+	var hash = window.location.hash;
+	var uname = hash.substr(hash.indexOf('=')+1);
+	getGroups(uname);
+
 	var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Your Groups</h3><br>'
@@ -211,14 +213,14 @@ var sb_index = function () {
 	            + '<th> </th>'
             + ' </tr>'
             + '</thead> <tbody>';
-	for (var i = 0; i < usergroups.length; i++) {
-	    html += '<tr><td>'+(i+1)+'</td> <td>'+usergroups[i].GNAME+'</td><td>';
+	for (var i = 0; i < groups.length; i++) {
+	    html += '<tr><td>'+(i+1)+'</td> <td>'+groups[i].GNAME+'</td><td>';
 	    html += '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Options <span class="caret"></span></button>';
 	    html += '<ul class="dropdown-menu" role="menu">';
-	    html += '<li><a href="#schedules?username='+usergroups[i].GNAME+'">View Members</a></li>';
-	    html += '<li><a href="#schedules?username='+usergroups[i].GNAME+'">Invite Buddy to Group</a></li>';
+	    html += '<li><a href="#schedules?username='+groups[i].GNAME+'">View Members</a></li>';
+	    html += '<li><a href="#schedules?username='+groups[i].GNAME+'">Invite Buddy to Group</a></li>';
 	    html += '<li class="divider"></li>';
-	    html += '<li><a href="#groups" id="'+usergroups[i].GNAME+'" class="delete-group">Leave Group</a></li>';
+	    html += '<li><a href="#groups" id="'+groups[i].GNAME+'" class="delete-group">Leave Group</a></li>';
 	    html += '</ul></div></td></tr>';
 	}
 	html += '</tbody></table></div></div>';
@@ -283,34 +285,19 @@ var sb_index = function () {
 	});
     };
 
-  // ajax method to GET all the buddies of the logged-in user from backend
-    getUserGroups = function () {
+  // ajax method to GET all the schedules of the logged-in user from backend
+    getGroups = function (uname) {
 	$.ajax({
-	    url: 'api/get_groups.php?username='+username+'',
+	    url: 'api/get_groups.php?username='+uname+'',
 	    type: 'GET',
 	    async: false,
 	    dataType: 'json',
 	    success: function (data) {
 		for (var i = 0; i < data.length; i++)
-		    usergroups[i] = data[i];
-	    }
-	});
-    };
-
-  // ajax method to GET all the users from the backend
-    getGroups = function (async_control) {
-	$.ajax({
-	    url: 'api/get_groups.php',
-	    type: 'GET',
-	    async: false,
-	    dataType: 'json',
-	    success: function (data) {
-		for (var i = 0; i < data.length; i++) {
 		    groups[i] = data[i];
-		}
 	    }
 	});
-    };
+    }; 
 
   // ajax method to GET all the users from the backend
     getUsers = function (async_control) {
@@ -367,8 +354,8 @@ var sb_index = function () {
 	    showCreateSchedulePage();
 	else if (newHash.substr(0,15) === '#schedules?sid=')
 	    showSchedulePage();
-	else if(newHash === '#usergroups')
-	    showUserGroupsPage();
+	else if (newHash.substr(0,17) === '#groups?username=')
+	    showGroups();
     else
 	showLandPage();
     };
