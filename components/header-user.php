@@ -41,6 +41,13 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown">
+              <a href="#schedules" class="dropdown-toggle" data-toggle="dropdown">Schedules <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#schedules">View Schedules</a></li>
+                <li><a href="#addCommitment">Add Commitment</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
               <a href="#buddies" class="dropdown-toggle" data-toggle="dropdown">Buddies <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="#buddies">View Buddies</a></li>
@@ -48,10 +55,10 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#schedules" class="dropdown-toggle" data-toggle="dropdown">Schedules <b class="caret"></b></a>
+              <a href="#usergroups" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#schedules">View Schedules</a></li>
-                <li><a href="#addCommitment">Add Commitment</a></li>
+                <li><a href="#usergroups">View Your Groups</a></li>
+                <li><a href="#addCommitment">Join Group</a></li>
               </ul>
             </li>
           </ul>
