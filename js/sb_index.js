@@ -31,6 +31,8 @@ var sb_index = function () {
     showSchedulePage, showGroupPage;
 
     showLandPage = function () {
+	document.getElementById('calendar').style.display="none";
+
 	var html = String()
         + '<div class="jumbotron">'
           + '<h1>Welcome, '+username+'!</h1>'
@@ -48,7 +50,7 @@ var sb_index = function () {
 	getBuddies();
 	var html = String() 
       + '<div class="jumbotron">'
-      + '<h3>Your Buddies</h3><br>'
+      + '<h3>Your  Buddies</h3><br>'
       + '<p class="text-right"><a href="#addbuddy" type="button" class="btn btn-default">Add Buddy</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
@@ -127,7 +129,7 @@ var sb_index = function () {
 	getSchedules(uname);
 	var html = String() 
       + '<div class="jumbotron">'
-      + '<h3>Your Schedules</h3><br>'
+      + '<h3>' + uname + '\'s Schedules</h3><br>'
       + '<p class="text-right"><a href="#createschedule" type="button" class="btn btn-default">Add Schedule</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
@@ -170,6 +172,8 @@ var sb_index = function () {
     };
 
     showSchedulePage = function () {
+	document.getElementById('calendar').style.display="block";
+
     // kind of a hacky way of obtaining the sid of a schedule from a URL GET
     // parameter. basically this code takes a url '#schedules?sid=4' and
     // sets the variable sid equal to 4.
@@ -356,14 +360,13 @@ var sb_index = function () {
 	    showSchedulePage();
 	else if (newHash.substr(0,17) === '#groups?username=')
 	    showGroups();
-    else
-	showLandPage();
+	else
+	    showLandPage();
     };
 
     init = function (session_username) {
     // set the username associated with the session
 	username = session_username;
-    
     // add asynchronous events here
 	getUsers();
     // bind onHashChange method to the hashchange window event and trigger it

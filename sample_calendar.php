@@ -2,6 +2,215 @@
   <div id="main" class="container">
 <div class="jumbotron">
 
+
+
+<table class="calendar table table-bordered">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th class="text-center" width="20%">Sunday</th>
+            <th class="text-center" width="20%">Monday</th>
+            <th class="text-center" width="20%">Tuesday</th>
+            <th class="text-center" width="20%">Wednesday</th>
+            <th class="text-center" width="20%">Thursday</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>08:00</td>
+            <td id="d5t2" rowspan="1"> hi </td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>08:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>09:00</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>09:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>10:00</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>10:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>11:00</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>11:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>12:00</td>
+            <td class=" no-events" rowspan="1"></td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>12:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>13:00</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>13:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>14:00</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        <tr>
+            <td>14:30</td>
+            <td class=" no-events" rowspan="1"></td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>15:00</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>15:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>16:00</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>       </tr>
+        <tr>
+            <td>16:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>17:00</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>17:30</td>
+            <td id="d1t1" class=" no-events" rowspan="1"></td>
+            <td id="d2t1" class=" no-events" rowspan="1"></td>
+            <td id="d3t1" class=" no-events" rowspan="1"></td>
+            <td id="d4t1" class=" no-events" rowspan="1"></td>
+            <td id="d5t1" class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>18:00</td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>18:30</td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>19:00</td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+        </tr>
+        <tr>
+            <td>19:30</td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+            <td class=" no-events" rowspan="1"></td>
+        </tr>
+    </tbody>
+</table>
+<br><br>
 <table class="calendar table table-bordered">
     <thead>
         <tr>
@@ -233,5 +442,13 @@
     </tbody>
 </table>
 
+<button type="button" 
+onclick="document.getElementById('d5t2').style.color='red'">
+Click Me!</button>
+
+<script>
+document.getElementById("d5t2").style.background="blue";
+
+</script>
 </div></div>
 <?php include 'components/footer.php'; ?>
