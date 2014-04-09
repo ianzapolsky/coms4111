@@ -48,7 +48,7 @@ var sb_index = function () {
       + '<p class="text-right"><a href="#addbuddy" type="button" class="btn btn-default">Add Buddy</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
-	+ '<table class="table table-striped"><thead>'
+	+ '<table class="table table-hover"><thead>'
 	+ '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
         + ' <tr>'
             + '<th>#</th>'
@@ -83,37 +83,83 @@ var sb_index = function () {
 	+ '<!-- /.row --></p>'
       + '<br><div class="panel panel-default">'
         + '<div class="panel-body">'
-	+ '<table class="table table-striped"><thead>'
+	+ '<table class="table table-hover"><thead>'
 	+ '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
         + ' <tr>'
             + '<th>#</th>'
             + '<th>Username</th>'
 	    + '<th> </th>'
         + ' </tr>'
-            + '</thead> <tbody>';
+            + '</thead> <tbody>'
+	    + '<form id="add-buddy" method="post" role="form">';
 	for (var i = 0; i < users.length; i++){
-	    //if(buddies.indexOf(users[i].USERNAME+) > -1){ << this code does not work
-		html += '<tr><td>' + (i+1) + '</td> <td>' + users[i].USERNAME+'</td><td>';
-		html += '<a href="#" type="button" class="btn btn-default">Add Buddy</a>';
-	    //}
+	 
+	    html += '<tr><td>' + (i+1) + '</td> <td>' + users[i].USERNAME+'</td><td>';
+            html += '<input type="hidden" id="buddy" value="'+ users[i].USERNAME +'">';
+	    html += '<input type="submit" value="Add Buddy" class="btn btn-default">';
+	    html += '</td></tr>';
 	}
-	html += '</tbody></table></div></div>';
+	html += '</form></tbody></table></div></div>';
 	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
     
-    // update the main page with buddy page html
+	// update the main page with buddy page html
 	$( '#main' ).html(html);
-    };
 
+    // hook create user form to backend
+	$( '#add-buddy' ).submit(function (event) {
+	    alert("add buddy!");
+	    createBuddy(event);
+	});
+      };
+    
+  // ajax method to POST a new buddy to the backend
+    createBuddy = function (event) {
+	alert("inside create buddy");
+	var 
+	username1 = username,
+	username2 = $( '#buddy' ).val(),
+	buddy = {'USERNAME1': username1, 'USERNAME2': username2};
+
+	event.preventDefault();
+	$.ajax({
+	    url: 'api/post_buddy.php',
+	    type: 'POST',
+	    data: buddy,
+	    async: false,
+	    dataType: 'json',
+	});
+    
+	alert(username2 + " is now a buddy!");
+    // after user is created, reload ajax user data to reflect change, and
+    // move back to the land page
+	getBuddies();
+	window.location.hash = '#buddies';
+    };
 
     showScheduleSelectPage = function () {
     var html = String() 
       + '<div class="jumbotron">'
-        + '<h1><a href="#">ScheduleBuddy</a></h1>'
-        + '<h3>Schedules</p>'
-        + '<ul>';
-    for (var i = 0; i < schedules.length; i++)
-      html += '<li><a href="#schedules?sid='+schedules[i].SID+'">'+schedules[i].SNAME+'</a></li>';
-    html += '</ul></div>';
+      + '<h3>Your Schedules</h3><br>'
+      + '<p class="text-right"><a href="#addbuddy" type="button" class="btn btn-default">Add Schedule</a></p>'
+      + '<div class="panel panel-default">'
+        + '<div class="panel-body">'
+	+ '<table class="table table-hover"><thead>'
+	+ '<colgroup><col class="col-xs-1"><col class="col-xs-4"><col class="col-xs-4"></colgroup>'
+        + ' <tr>'
+            + '<th>#</th>'
+            + '<th>Schedule Name</th>'
+	    + '<th> </th>'
+        + ' </tr>'
+            + '</thead> <tbody>';
+	for (var i = 0; i < schedules.length; i++){
+		html += '<tr><td>' + (i+1) + '</td> <td><h4>'+schedules[i].SNAME+'</h4></td><td class="text-right">';
+	        html += '<a href="#schedules?sid='+schedules[i].SID+'" type="button" class="btn btn-default">View</a> ';
+	        html += '<a href="#deleteschedule?sid='+schedules[i].SID+'" type="button" class="btn btn-danger">Delete</a>';
+		html += '</td></tr>';
+	}
+	html += '</tbody></table></div></div>';
+	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+
     // update the main page with schedule select page html
     $( '#main' ).html(html);
   };

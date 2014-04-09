@@ -47,6 +47,13 @@
                 <li><a href="#addbuddy">Add Buddy</a></li>
               </ul>
             </li>
+            <li class="dropdown">
+              <a href="#schedules" class="dropdown-toggle" data-toggle="dropdown">Schedules <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#schedules">View Schedules</a></li>
+                <li><a href="#addCommitment">Add Commitment</a></li>
+              </ul>
+            </li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
