@@ -1,4 +1,4 @@
-
+/**
  * sb_index.js
  * js for schedule buddy index
  * COMS 4111
@@ -282,7 +282,20 @@ var sb_index = function () {
 	    html += '<td class="text-right">';
 	    html += '</td></tr>';
 	    var element = "d" + c.DAY + "t";
-	    
+
+      var starttime = c.START_TIME;
+      var stimelength = starttime.length;
+      var startcell = (starttime.substring(0,stimelength-2) - 7.5)*2;
+      if(starttime.substring(stimelength-2, stimelength)/60 >= 0.5)
+    startcell+=1;
+
+      var endtime = c.END_TIME;
+      var etimelength = endtime.length;
+      var endcell = (endtime.substring(0, etimelength-2) - 7.5)*2;
+      if(endtime.substring(etimelength-2, etimelength)/60 >= 0.5)
+    endcell+=1;
+
+	    /*
 	    var startcell = (c.START_TIME.substring(0, 2) - 7.5)*2;
 	    if(c.START_TIME.substring(2, 4)/60 >= 0.5)
 		startcell+=1;
@@ -290,6 +303,7 @@ var sb_index = function () {
 	    var endcell = (c.END_TIME.substring(0, 2) - 7.5)*2;
 	    if(c.END_TIME.substring(2, 4)/60 >= 0.5)
 		endcell+=1;
+      */
 
 	    for(var start = startcell; start < endcell + 1; start++)
 		document.getElementById(element + start).style.background="#e58282";
@@ -414,7 +428,20 @@ var sb_index = function () {
 		    		    
 		    for(var c = 0; c < commitments.length; c++){
 			var com = commitments[c];
-						
+      
+      var starttime = c.START_TIME;
+      var stimelength = starttime.length;
+      var startcell = (starttime.substring(0,stimelength-2) - 7.5)*2;
+      if(starttime.substring(stimelength-2, stimelength)/60 >= 0.5)
+    startcell+=1;
+
+      var endtime = c.END_TIME;
+      var etimelength = endtime.length;
+      var endcell = (endtime.substring(0, etimelength-2) - 7.5)*2;
+      if(endtime.substring(etimelength-2, etimelength)/60 >= 0.5)
+    endcell+=1;					
+
+      /*	
 			var startcell = (com.START_TIME.substring(0, 2) - 7.5)*2;
 			if(com.START_TIME.substring(2, 4)/60 >= 0.5)
 			    startcell+=1;
@@ -423,6 +450,7 @@ var sb_index = function () {
 			var endcell = (com.END_TIME.substring(0, 2) - 7.5)*2;
 			if(com.END_TIME.substring(2, 4)/60 >= 0.5)
 			    endcell+=1;
+      */
 
 			var element = "d" + com.DAY + "t";
 			for(var start = startcell; start < endcell + 1; start++){

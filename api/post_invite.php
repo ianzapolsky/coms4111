@@ -24,8 +24,7 @@ else {
 }
 
 // prepare statement 1
-$msg = "insert into invites values ('" . $iid . "', '" . $cid . "', '" . $iname . "', '" . $username . "')";
-echo $msg;
+$msg = "insert into invites values ('" . $iid . "', '" . $cid . "', '" . $username . "', '" . $iname . "')";
 $stid = oci_parse($conn, $msg); 
 if (!$stid) {
   die('Statement preparation failed!');
