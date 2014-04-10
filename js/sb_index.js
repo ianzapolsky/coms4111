@@ -179,6 +179,7 @@ var sb_index = function () {
   };
 
   showSchedulePage = function () {
+      refreshCalendar();
 	// makes the schedule appear
 	document.getElementById('calendar').style.display="block";
 
@@ -487,6 +488,14 @@ var sb_index = function () {
 	  });
   };
 
+    refreshCalendar = function(){
+	for(var x = 1; x<6; x++){
+	    for(var y = 1; y < 25; y++){
+		document.getElementById("d" + x + "t" + y).style.background="none";
+	    }
+	}
+
+    }
   // ajax method to GET all the schedules of the logged-in user from backend
   getGroups = function (all) {
     // reinitialize groups to an empty array
