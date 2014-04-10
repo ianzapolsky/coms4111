@@ -147,7 +147,6 @@ var sb_index = function () {
 	  for (var i = 0; i < schedules.length; i++){
 	    html += '<tr><td>' + (i+1) + '</td> <td>'+schedules[i].SNAME+'</td><td class="text-right">';
 	    html += '<a href="#schedules?sid='+schedules[i].SID+'" type="button" class="btn btn-default">View</a> ';
-	    html += '<a href="#schedules" id="'+schedules[i].SID+'" class="btn btn-danger" type="button">Delete</a>';
 	    html += '</td></tr>';
 	  }
 	  html += '</tbody></table></div></div>';
