@@ -35,7 +35,7 @@ var sb_login = function() {
                 + '<div id="pword-div">'
                   + '<input type="password" class="form-control" placeholder="Password" id="password" name="password" required>'
                 + '</div>'
-                + '<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>'
+                + '<br><button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>'
               + '</form>'
             + '</div>'
           + '</div>'

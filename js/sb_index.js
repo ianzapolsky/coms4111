@@ -33,7 +33,7 @@ var sb_index = function () {
   deleteBuddy, joinGroup, leaveGroup, postSchedule, getMaxSID,
   // these are all the pages we would like to implement
   showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
-    showSchedulePage, showGroupPage, showJoinGroupPage, showCreateCommitmentPage, showInvitesPage,
+    showSchedulePage, showGroupPage, showJoinGroupPage, showCreateCommitmentPage, showInvitesPage, createInvitePage,
   showCreateSchedulePage, showMembersPage;
 
   showLandPage = function () {
@@ -44,9 +44,10 @@ var sb_index = function () {
         + '<div class="jumbotron">'
           + '<h2>Welcome, '+username+'!</h2>'
           + '<ul class="list-unstyled" style="margin-left: 20px;">'
-            +'<li><h2><a href="#buddies">Buddies</a></h2></li>'
-	          +'<li><h2><a href="#schedules?username='+username+'">Schedules</a></h2></li>'
-	          +'<li><h2><a href="#groups">Groups</a></h2></li>'
+            +'<li><h3><a href="#buddies">Buddies</a></h3></li>'
+	          +'<li><h3><a href="#schedules?username='+username+'">Schedules</a></h3></li>'
+	          +'<li><h3><a href="#groups">Groups</a></h3></li>'
++'<li><h3><a href="#invites">Invites</a></h3></li>'
           + '</ul>'
         + '</div>'
 
@@ -457,6 +458,7 @@ var sb_index = function () {
 	var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Your Invites</h3><br>'
++ '<p class="text-right"><a href="#createinvite" type="button" class="btn btn-default">Create Invite</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
 	        + '<table class="table table-hover"><thead>'
@@ -483,6 +485,79 @@ var sb_index = function () {
 	});
     };
 
+    showCreateInvitePage = function () {
+	var html = String() 
+      + '<div class="jumbotron">'
+      + '<h3>Create an Invite</h3><br>'
+      + '<form id="commitment-create" class="form-horizontal" role="form">'
+      + '<div class="form-group">'
+      + '<label for="cname" class="col-sm-2 control-label">Invite Name</label>'
+      + '<div class="col-sm-10">'
+      + '<input type="text" class="form-control" id="cname" placeholder="Invite Name">'
+      + '</div></div>'
+      + '<div class="form-group">'
+      + '<label for="cname" class="col-sm-2 control-label">Recipient</label>'
+      + '<div class="col-sm-10">'
+      + '<input type="text" class="form-control" id="cname" placeholder="Receiver\'s Username">'
+      + '</div></div>'
+      + '<div class="form-group">'
+      + '<label for="start-time" class="col-sm-2 control-label">Commitment</label>'
+	    + '<div class="col-sm-10">';
+
+	getSchedules(username);
+	alert("number of schedules = " + schedules.length);
+	// goes through each schedule
+	for (var i = 0; i < schedules.length; i++){
+	    var s = schedules[i];
+	    alert("number of commitments = " + commitments.length);
+	    getCommitments(s.SID);
+	    // adds each member's commitments in schedules to the calendar
+		for(var c = 0; c < commitments.length; c++){
+		    var com = commitments[c];
+		    html += '<div class="radio"><label>';
+		    html += '<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>';
+		    html += com.CNAME + ", " + convertDay(com.CDAY) + " from " + com.START_TIME + " to " + com.END_TIME;
+		    html += '</label></div>';
+		}
+
+	    }
+
+      html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10"><br>'
+      html += '<button id="commitment-submit" type="submit" class="btn btn-default">Create Invite</button>'
+	html += '</div></div></form>';
+
+    // update the main page with schedule select page html
+	$( '#main' ).html(html);
+
+	$( '#commitment-submit' ).click(function () {
+	    console.log('clicked');
+	        var 
+            cid,
+            hash = window.location.hash,
+	    sid = hash.substr(hash.indexOf('=')+1),
+            cname = $('#cname').val(),
+            start_time = $('#start-time').val(),
+            end_time = $('#end-time').val(),
+            day = $('#day').val();
+
+	    $.ajax({
+		url: 'api/get_max_CID.php',
+		type: 'GET',
+		async: false,
+		success: function (data) {
+		    var json = JSON.parse(data);
+		    cid = parseInt(json['MAX(CID)'][0])+1;
+		}
+	    });
+
+	    $.ajax({
+		url: 'api/post_commitment.php?CID='+cid+'&SID='+sid+'&CNAME='+cname+'&START_TIME='+start_time+'&END_TIME='+end_time+'&DAY='+day+'',
+		type: 'GET',
+		async: false,
+	    });
+	    document.location.reload();
+	});
+    };
 
   // ajax method to GET all the buddies of the logged-in user from backend
   getBuddies = function () {
@@ -723,6 +798,8 @@ var sb_index = function () {
 	    showJoinGroupPage();
           else if (newHash === '#invites')
 	    showInvitesPage();
+      else if (newHash === '#createinvite')
+	  showCreateInvitePage();
 	  else
 	    showLandPage();
   };
