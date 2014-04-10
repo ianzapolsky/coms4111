@@ -29,7 +29,8 @@ var sb_index = function () {
   deleteBuddy, joinGroup, leaveGroup, postSchedule, getMaxSID,
   // these are all the pages we would like to implement
   showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
-  showSchedulePage, showGroupPage, showJoinGroupPage,
+  showSchedulePage, showGroupPage, showJoinGroupPage, showCreateCommitmentPage,
+  showCreateSchedulePage;
 
   showLandPage = function () {
 
@@ -176,6 +177,43 @@ var sb_index = function () {
 
   };
 
+  showCreateCommitmentPage = function () {
+  var html = String() 
+      + '<div class="jumbotron">'
+      + '<h3>Create a Commitment</h3><br>'
+      + '<form id="commitment-create" class="form-horizontal" role="form">'
+      + '<div class="form-group">'
+      + '<label for="cname" class="col-sm-2 control-label">Commitment Name</label>'
+      + '<div class="col-sm-10">'
+      + '<input type="text" class="form-control" id="cname" placeholder="Commitment Name">'
+      + '</div></div>'
+      + '<div class="form-group"><label class="checkbox-inline">'
+      + '<input type="checkbox" id="inlineCheckbox1" value="option1"> Monday</label><label class="checkbox-inline">'
+      + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Tuesday</label><label class="checkbox-inline">'
+      + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Wednesday</label><label class="checkbox-inline">'
+      + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Thursday</label><label class="checkbox-inline">'
+      + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Friday</label>'
+      + '</div></div>'
+      + '<div class="form-group">'
+      + '<label for="start-time" class="col-sm-2 control-label">Start Time</label>'
+      + '<div class="col-sm-10">'
+      + '<input type="text" class="form-control" id="start-time" placeholder="Start Time">'
+      + '</div></div>'
+      + '<div class="form-group">'
+      + '<label for="end-time" class="col-sm-2 control-label">End Time</label>'
+            + '<div class="col-sm-10">'
+      + '<input type="text" class="form-control" id="end-time" placeholder="End Time">'
+            + '</div></div>';
+
+      html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">'
+            html += '<button type="submit" class="btn btn-default">Create Commitment</button>'
+      html += '</div></div></form>';
+
+
+    // update the main page with schedule select page html
+    $( '#main' ).html(html);
+  };
+
   showSchedulePage = function () {
 	// makes the schedule appear
 	document.getElementById('calendar').style.display="block";
@@ -194,7 +232,7 @@ var sb_index = function () {
 	    + '<div class="jumbotron">'
             + '<h3>View Schedule</h3><br><h4>Commitments:</h4>'
 
-	    + '<p class="text-right"><a href="#createschedule" type="button" class="btn btn-default">Add Commitment</a></p>'
+	    + '<p class="text-right"><a href="#createcommitment" type="button" class="btn btn-default">Add Commitment</a></p>'
 	    + '<div class="panel panel-default">'
             + '<div class="panel-body">'
 	    + '<table class="table table-hover"><thead>'
@@ -253,7 +291,7 @@ var sb_index = function () {
 	            + '<th> </th>'
             + ' </tr>'
             + '</thead> <tbody>';
-	for (var i = 0; i < groups.length; i++) {
+	  for (var i = 0; i < groups.length; i++) {
 	    html += '<tr><td>'+(i+1)+'</td> <td>'+groups[i].GNAME+'</td><td>';
 	    html += '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Options <span class="caret"></span></button>';
 	    html += '<ul class="dropdown-menu" role="menu">';
@@ -488,6 +526,8 @@ var sb_index = function () {
     }
 	  else if (newHash === '#createschedule')
 	    showCreateSchedulePage();
+    else if (newHash === '#createcommitment')
+      showCreateCommitmentPage();
 	  else if (newHash.substr(0,15) === '#schedules?sid=')
 	    showSchedulePage();
 	  else if (newHash === '#groups')
