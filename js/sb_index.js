@@ -17,29 +17,30 @@ var sb_index = function () {
     schedules = [],
     // list of commitments for the currently viewed schedule
     commitments = [],
-    // list of groups for the currently viewed user
+    // list of groups for the logged-in user
     groups = [],
     // list of users
     users = [],
 
   // methods
-    init, convertDay, onHashChange, changePage,
+  init, convertDay, onHashChange, changePage,
   // ajax
-    getBuddies, getSchedules, getCommitments, getGroups, postBuddy,
+  getBuddies, getSchedules, getCommitments, getGroups, postBuddy,
   // these are all the pages we would like to implement
-    showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
-    showSchedulePage, showGroupPage;
+  showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
+  showSchedulePage, showGroupPage;
 
-    showLandPage = function () {
-	document.getElementById('calendar').style.display="none";
+  showLandPage = function () {
 
-	var html = String()
+	  document.getElementById('calendar').style.display="none";
+
+	  var html = String()
         + '<div class="jumbotron">'
           + '<h1>Welcome, '+username+'!</h1>'
           + '<ul class="list-unstyled" style="margin-left: 20px;">'
             +'<li><h2><a href="#buddies">Buddies</a></h2></li>'
-	    +'<li><h2><a href="#schedules?username='+username+'">Schedules</a></h2></li>'
-	    +'<li><h2><a href="#groups?username=' + username + '"">Groups</a></h2></li>'
+	          +'<li><h2><a href="#schedules">Schedules</a></h2></li>'
+	          +'<li><h2><a href="#groups">Groups</a></h2></li>'
           + '</ul>'
         + '</div>'
     // update the main page with land page html
@@ -71,23 +72,23 @@ var sb_index = function () {
 	    html += '<li class="divider"></li>';
 	    html += '<li><a href="#buddies" id="'+buddies[i].USERNAME+'" class="delete-buddy">Delete Buddy</a></li>';
 	    html += '</ul></div></td></tr>';
-	}
-	html += '</tbody></table></div></div>';
-	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+	  }
+	  html += '</tbody></table></div></div>';
+	  html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
     // update the main page with buddy page html
-	$( '#main' ).html(html);
+	  $( '#main' ).html(html);
   
-	$( '.delete-buddy' ).click(function () {
+	  $( '.delete-buddy' ).click(function () {
 	    var username2 = $(this).attr("id");
 	    $.ajax({
-		url: 'api/delete_buddy.php?username1='+username+'&username2='+username2+'',
-		type: 'GET',
-		async: false,
+		    url: 'api/delete_buddy.php?username1='+username+'&username2='+username2+'',
+		    type: 'GET',
+		    async: false,
 	    });
 	    document.location.reload();
-	});
-    };
+	  });
+  };
 
     showAddBuddyPage = function () {
 	getUsers();
@@ -123,18 +124,16 @@ var sb_index = function () {
 	}); 
     };
 
-    showScheduleSelectPage = function () {
-	var hash = window.location.hash;
-	var uname = hash.substr(hash.indexOf('=')+1);
-	getSchedules(uname);
-	var html = String() 
+  showScheduleSelectPage = function () {
+	  getSchedules(username);
+	  var html = String() 
       + '<div class="jumbotron">'
-      + '<h3>' + uname + '\'s Schedules</h3><br>'
+      + '<h3>' + username + '\'s Schedules</h3><br>'
       + '<p class="text-right"><a href="#createschedule" type="button" class="btn btn-default">Add Schedule</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
-	+ '<table class="table table-hover"><thead>'
-	+ '<colgroup><col class="col-xs-1"><col class="col-xs-4"><col class="col-xs-4"></colgroup>'
+	    + '<table class="table table-hover"><thead>'
+	    + '<colgroup><col class="col-xs-1"><col class="col-xs-4"><col class="col-xs-4"></colgroup>'
         + ' <tr>'
             + '<th>#</th>'
             + '<th>Schedule Name</th>'
@@ -144,18 +143,28 @@ var sb_index = function () {
 	for (var i = 0; i < schedules.length; i++){
 	    html += '<tr><td>' + (i+1) + '</td> <td>'+schedules[i].SNAME+'</td><td class="text-right">';
 	    html += '<a href="#schedules?sid='+schedules[i].SID+'" type="button" class="btn btn-default">View</a> ';
-	    html += '<a href="#deleteschedule?sid='+schedules[i].SID+'" type="button" class="btn btn-danger">Delete</a>';
+	    html += '<a href="#schedules" id="'+schedules[i].SID+'" class="delete-schedule btn btn-danger" type="button">Delete</a>';
 	    html += '</td></tr>';
-	}
-	html += '</tbody></table></div></div>';
-	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+	  }
+	  html += '</tbody></table></div></div>';
+	  html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
     // update the main page with schedule select page html
-	$( '#main' ).html(html);
-    };
+	  $( '#main' ).html(html);
 
-    showCreateSchedulePage = function () {
-	var html = String() 
+    $( '.delete-schedule' ).click(function () {
+      var sid = $(this).attr('id');
+	    $.ajax({
+		    url: 'api/delete_schedule.php?sid='+sid+'',
+		    type: 'GET',
+		    async: false,
+	    });
+	    document.location.reload();
+    });
+  };
+
+  showCreateSchedulePage = function () {
+	  var html = String() 
 	    + '<div class="jumbotron">'
 	    + '<h3>Create a Schedule</h3><br>'
 	    + '<form role="form">'
@@ -167,12 +176,12 @@ var sb_index = function () {
 	    + '</form>'
 	    + '<a href="#schedules" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
-	// update the main page with schedule select page html
-	$( '#main' ).html(html);
-    };
+	  // update the main page with schedule select page html
+	  $( '#main' ).html(html);
+  };
 
-    showSchedulePage = function () {
-	document.getElementById('calendar').style.display="block";
+  showSchedulePage = function () {
+	  document.getElementById('calendar').style.display="block";
 
     // kind of a hacky way of obtaining the sid of a schedule from a URL GET
     // parameter. basically this code takes a url '#schedules?sid=4' and
@@ -198,12 +207,9 @@ var sb_index = function () {
 	$( '#main' ).html(html);
     };
 
-    showGroupPage = function () {
-	var hash = window.location.hash;
-	var uname = hash.substr(hash.indexOf('=')+1);
-	getGroups(uname);
-
-	var html = String() 
+  showGroupPage = function () {
+	  getGroups();
+	  var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Your Groups</h3><br>'
       + '<p class="text-right"><a href="#joingroup" type="button" class="btn btn-default">Join Group</a></p>'
@@ -236,12 +242,12 @@ var sb_index = function () {
 	$( '.delete-group' ).click(function () {
 	    var gname = $(this).attr("id");
 	    $.ajax({
-		url: 'api/delete_group.php?username='+username+'&group='+gname+'',
-		type: 'GET',
-		async: false,
+		  url: 'api/delete_group.php?username='+username+'&group='+gname+'',
+		  type: 'GET',
+		  async: false,
 	    });
 	    document.location.reload();
-	});
+	  });
     };
 
   // ajax method to GET all the buddies of the logged-in user from backend
@@ -259,18 +265,18 @@ var sb_index = function () {
     };
 
   // ajax method to GET all the schedules of the logged-in user from backend
-    getSchedules = function (uname) {
-	$.ajax({
+  getSchedules = function (uname) {
+	  $.ajax({
 	    url: 'api/get_schedules.php?username='+uname+'',
 	    type: 'GET',
 	    async: false,
 	    dataType: 'json',
 	    success: function (data) {
-		for (var i = 0; i < data.length; i++)
+		  for (var i = 0; i < data.length; i++)
 		    schedules[i] = data[i];
 	    }
-	});
-    }; 
+	  });
+  }; 
 
   // ajax method to GET all the commitments for a given schedule, specified by
   // its sid, passed in as a function argument
@@ -290,22 +296,23 @@ var sb_index = function () {
     };
 
   // ajax method to GET all the schedules of the logged-in user from backend
-    getGroups = function (uname) {
-	$.ajax({
-	    url: 'api/get_groups.php?username='+uname+'',
+  getGroups = function () {
+	  $.ajax({
+	    url: 'api/get_groups.php?username='+username+'',
 	    type: 'GET',
 	    async: false,
 	    dataType: 'json',
 	    success: function (data) {
-		for (var i = 0; i < data.length; i++)
-		    groups[i] = data[i];
-	    }
-	});
-    }; 
+		    for (var i = 0; i < data.length; i++) {
+		      groups[i] = data[i];
+	      }
+      }
+	  });
+  }; 
 
   // ajax method to GET all the users from the backend
-    getUsers = function (async_control) {
-	$.ajax({
+  getUsers = function (async_control) {
+	  $.ajax({
 	    url: 'api/get_users.php',
 	    type: 'GET',
 	    async: false,
@@ -318,64 +325,64 @@ var sb_index = function () {
 	});
     };
 
-    postBuddy = function (username1, username2) {
-	var buddy = {'USERNAME1': username1, 'USERNAME2': username2};
-	$.ajax({
+  postBuddy = function (username1, username2) {
+	  var buddy = {'USERNAME1': username1, 'USERNAME2': username2};
+	  $.ajax({
 	    url: 'api/post_buddy.php',
 	    type: 'POST',
 	    async: false,
 	    data: buddy,
-	});
-    };
+	  });
+  };
 
-    convertDay = function (day_num) {
-	switch (day_num) {
-	case 1: 
+  convertDay = function (day_num) {
+	  switch (day_num) {
+	    case 1: 
             return 'Monday';
-	case 2:
+	    case 2:
             return 'Tuesday';
-	case 3:
+	    case 3:
             return 'Wednesday';
-	case 4:
+  	  case 4:
             return 'Thursday';
-	default:
+	    default:
             return 'Friday';
-	}
-    };
+	  }
+  };
       
-    onHashChange = function () {
-	changePage( document.location.hash );
-    };
+  onHashChange = function () {
+	  changePage( document.location.hash );
+  };
 
-    changePage = function (newHash) {
-	if (newHash === '#buddies')
+  changePage = function (newHash) {
+	  if (newHash === '#buddies')
 	    showBuddyPage();
-	else if(newHash === '#addbuddy')
+	  else if(newHash === '#addbuddy')
 	    showAddBuddyPage();
-	else if (newHash.substr(0,20) === '#schedules?username=')
+	  else if (newHash === '#schedules')
 	    showScheduleSelectPage();
-	else if (newHash === '#createschedule')
+	  else if (newHash === '#createschedule')
 	    showCreateSchedulePage();
-	else if (newHash.substr(0,15) === '#schedules?sid=')
+	  else if (newHash.substr(0,15) === '#schedules?sid=')
 	    showSchedulePage();
-	else if (newHash.substr(0,17) === '#groups?username=')
-	    showGroups();
-	else
+	  else if (newHash.substr(0,17) === '#groups?username=')
+	    showGroupPage();
+	  else
 	    showLandPage();
-    };
+  };
 
-    init = function (session_username) {
+  init = function (session_username) {
     // set the username associated with the session
-	username = session_username;
+	  username = session_username;
     // add asynchronous events here
-	getUsers();
+	  getUsers();
     // bind onHashChange method to the hashchange window event and trigger it
     // to load the necessary html
-	$(window)
+	  $(window)
 	    .bind('hashchange', onHashChange)
 	    .trigger('hashchange');
-    };
+  };
 
-    return { init : init };
+  return { init : init };
 
 }();

@@ -43,8 +43,7 @@
             <li class="dropdown">
               <a href="#schedules" class="dropdown-toggle" data-toggle="dropdown">Schedules <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#schedules">View Schedules</a></li>
-                <li><a href="#addCommitment">Add Commitment</a></li>
+                <li><a href="#schedules?username=<?php echo $_SESSION['username']; ?>">View Schedules</a></li>
               </ul>
             </li>
             <li class="dropdown">
