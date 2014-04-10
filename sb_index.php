@@ -23,7 +23,7 @@
 
   <div id="calendar" class="container">
   <div class="jumbotron">
-  <h3>Your Schedule</h3><br>  
+  <h3>Calendar</h3><br>  
   <?php include 'components/calendar.php'; ?>
   </div></div>
 

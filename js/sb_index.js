@@ -37,11 +37,17 @@ var sb_index = function () {
 
 	  var html = String()
         + '<div class="jumbotron">'
-          + '<h1>Welcome, '+username+'!</h1>'
+          + '<h2>Welcome, '+username+'!</h2>'
           + '<ul class="list-unstyled" style="margin-left: 20px;">'
+<<<<<<< HEAD
             +'<li><h2><a href="#buddies">Buddies</a></h2></li>'
 	          +'<li><h2><a href="#schedules">Schedules</a></h2></li>'
 	          +'<li><h2><a href="#groups">Groups</a></h2></li>'
+=======
+            +'<li><h3><a href="#buddies">Buddies</a></h3></li>'
+	    +'<li><h3><a href="#schedules?username='+username+'">Schedules</a></h3></li>'
+	    +'<li><h3><a href="#groups?username=' + username + '"">Groups</a></h3></li>'
+>>>>>>> 871eaad52c33081942cce9201340e35f39f89d3a
           + '</ul>'
         + '</div>'
 
@@ -53,7 +59,7 @@ var sb_index = function () {
 	  getBuddies();
 	  var html = String() 
       + '<div class="jumbotron">'
-      + '<h3>Your  Buddies</h3><br>'
+      + '<h3>Your Buddies</h3><br>'
       + '<p class="text-right"><a href="#addbuddy" type="button" class="btn btn-default">Add Buddy</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
@@ -175,31 +181,66 @@ var sb_index = function () {
   };
 
   showSchedulePage = function () {
-	  document.getElementById('calendar').style.display="block";
+	// makes the schedule appear
+	document.getElementById('calendar').style.display="block";
 
-    // kind of a hacky way of obtaining the sid of a schedule from a URL GET
-    // parameter. basically this code takes a url '#schedules?sid=4' and
-    // sets the variable sid equal to 4.
-	  var hash = window.location.hash;
-	  var sid = hash.substr(hash.indexOf('=')+1);
+	// kind of a hacky way of obtaining the sid of a schedule from a URL GET
+	// parameter. basically this code takes a url '#schedules?sid=4' and
+	// sets the variable sid equal to 4.
+	var hash = window.location.hash;
+	var sid = hash.substr(hash.indexOf('=')+1);
 
-    // get all the commitments for the given schedule
-	  getCommitments(sid);
+	// get all the commitments for the given schedule
+	getCommitments(sid);
 
-    // build the HTML representation of the schedule
-	  var html = String() 
-      + '<div class="jumbotron">'
-        + '<h1><a href="#">ScheduleBuddy</a></h1>'
-        + '<h3>Schedule</p>'
-            + '<ul>';
-	  for (var i = 0; i < commitments.length; i++)
+	// build the HTML representation of the schedule
+	var html = String() 
+	    + '<div class="jumbotron">'
+            + '<h3>View Schedule</h3><br><h4>Commitments:</h4>'
+
+	    + '<p class="text-right"><a href="#createschedule" type="button" class="btn btn-default">Add Commitment</a></p>'
+	    + '<div class="panel panel-default">'
+            + '<div class="panel-body">'
+	    + '<table class="table table-hover"><thead>'
+	//+ '<colgroup><col class="col-xs-1"><col class="col-xs-4"><col class="col-xs-4"></colgroup>'
+            + ' <tr>'
+	    + '<th>#</th>'
+            + '<th>Commitment Name</th>'
+            + '<th>Day</th>'
+	    + '<th>Start Time</th>'
+	    + '<th>End Time</th>'
+	    + '<th> </th>'
+            + ' </tr>'
+            + '</thead> <tbody>';
+
+	for (var i = 0; i < commitments.length; i++){
 	    var c = commitments[i];
-	    html += '<li>'+c.CNAME+'. Day: '+convertDay(c.DAY)+'. Start: '+c.START_TIME+'. End: '+c.END_TIME+'</li>';
-	html += '</ul></div>';
+	    html += '<tr><td>' + (i+1) + '</td> <td>'+c.CNAME+'</td>';
+	    html += '<td>' + convertDay(c.DAY) + '</td><td>' + c.START_TIME + '</td><td>' + c.END_TIME + '</td>';
+	    html += '<td class="text-right">';
+	    html += '<a href="#deleteschedule?sid='+schedules[i].SID+'" type="button" class="btn btn-danger">Delete</a>';
+	    html += '</td></tr>';
+	    var element = "d" + c.DAY + "t";
+	    
+	    var startcell = (c.START_TIME.substring(0, 2) - 7.5)*2;
+	    if(c.START_TIME.substring(2, 4)/60 >= 0.5)
+		startcell+=1;
+
+	    var endcell = (c.END_TIME.substring(0, 2) - 7.5)*2;
+	    if(c.END_TIME.substring(2, 4)/60 >= 0.5)
+		endcell+=1;
+
+	    for(var start = startcell; start < endcell + 1; start++)
+		document.getElementById(element + start).style.background="#e58282";
+
+	}
+	html += '</tbody></table></div></div>';
+	html += '<br><a href="#schedules?username=' + username + '" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
     // update the main page with commitment schedule page html
-	  $( '#main' ).html(html);
-  };
+	$( '#main' ).html(html);
+
+    };
 
   showGroupPage = function () {
 	  getGroups();
@@ -345,26 +386,28 @@ var sb_index = function () {
   };
 
   convertDay = function (day_num) {
-	  switch (day_num) {
-	    case 1: 
+	switch (day_num) {
+	case '1': 
             return 'Monday';
-	    case 2:
+	case '2':
             return 'Tuesday';
-	    case 3:
+	case '3':
             return 'Wednesday';
-  	  case 4:
+	case '4':
             return 'Thursday';
-	    default:
+	default:
             return 'Friday';
-	  }
+  }
   };
       
   onHashChange = function () {
 	  changePage( document.location.hash );
   };
 
-  changePage = function (newHash) {
-	  if (newHash === '#buddies')
+    changePage = function (newHash) {
+	document.getElementById('calendar').style.display="none";
+
+	if (newHash === '#buddies')
 	    showBuddyPage();
 	  else if(newHash === '#addbuddy')
 	    showAddBuddyPage();

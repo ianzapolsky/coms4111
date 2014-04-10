@@ -12,13 +12,15 @@ if (!$conn) {
   die('Database not connected!');
 }
 
-// check for username
-if (!$_GET['sid']) 
+// check for sid
+if (!$_GET['sid']) { 
   die('sid was not provided!');
 }
 else {
   // prepare statement
-  $msg = "delete from schedules where sid='" . $_GET['sid'] . "'";
+  $msg = "delete from commitments where sid='" . $_GET['sid'] . "'";
+
+DELETE FROM schedules WHERE sid='" . $_GET['sid'] . "'";
   $stid = oci_parse($conn, $msg); 
   if (!$stid) {
     die('Statement preparation failed!');

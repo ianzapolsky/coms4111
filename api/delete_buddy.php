@@ -1,4 +1,4 @@
-c<?php 
+<?php 
   
 /**
  * delete_buddies.php
