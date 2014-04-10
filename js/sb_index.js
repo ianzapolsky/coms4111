@@ -1,4 +1,4 @@
-/**
+
  * sb_index.js
  * js for schedule buddy index
  * COMS 4111
@@ -33,8 +33,8 @@ var sb_index = function () {
   deleteBuddy, joinGroup, leaveGroup, postSchedule, getMaxSID,
   // these are all the pages we would like to implement
   showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
-    showSchedulePage, showGroupPage, showJoinGroupPage, showCreateCommitmentPage, showInvitesPage, createInvitePage,
-  showCreateSchedulePage, showMembersPage;
+  showSchedulePage, showGroupPage, showJoinGroupPage, showCreateCommitmentPage, 
+  showInvitesPage, createInvitePage, showCreateSchedulePage, showMembersPage;
 
   showLandPage = function () {
 
@@ -195,14 +195,6 @@ var sb_index = function () {
       + '<div class="col-sm-10">'
       + '<input type="text" class="form-control" id="day" placeholder="Day (1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday)">'
       + '</div></div>'
-      /*
-      + '<div class="form-group"><label class="checkbox-inline">'
-      + '<input type="checkbox" id="inlineCheckbox1" value="option1"> Monday</label><label class="checkbox-inline">'
-      + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Tuesday</label><label class="checkbox-inline">'
-      + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Wednesday</label><label class="checkbox-inline">'
-      + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Thursday</label><label class="checkbox-inline">'
-      + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Friday</label>'
-      */
       + '<div class="form-group">'
       + '<label for="start-time" class="col-sm-2 control-label">Start Time</label>'
       + '<div class="col-sm-10">'
@@ -246,7 +238,7 @@ var sb_index = function () {
         type: 'GET',
         async: false,
       });
-      document.location.reload();
+      window.location.hash = '#schedules?sid='+sid+'';
     });
   };
 
@@ -288,7 +280,6 @@ var sb_index = function () {
 	    html += '<tr><td>' + (i+1) + '</td> <td>'+c.CNAME+'</td>';
 	    html += '<td>' + convertDay(c.DAY) + '</td><td>' + c.START_TIME + '</td><td>' + c.END_TIME + '</td>';
 	    html += '<td class="text-right">';
-	    html += '<a href="#schedules" type="button" class="btn btn-danger">Delete</a>';
 	    html += '</td></tr>';
 	    var element = "d" + c.DAY + "t";
 	    
@@ -484,20 +475,20 @@ var sb_index = function () {
 	});
     };
 
-    showCreateInvitePage = function () {
-	var html = String() 
+  showCreateInvitePage = function () {
+	  var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Create an Invite</h3><br>'
-      + '<form id="commitment-create" class="form-horizontal" role="form">'
+      + '<form id="invite-create" class="form-horizontal">'
       + '<div class="form-group">'
-      + '<label for="cname" class="col-sm-2 control-label">Invite Name</label>'
+      + '<label for="iname" class="col-sm-2 control-label">Invite Name</label>'
       + '<div class="col-sm-10">'
-      + '<input type="text" class="form-control" id="cname" placeholder="Invite Name">'
+      + '<input type="text" class="form-control" id="iname" placeholder="Invite Name">'
       + '</div></div>'
       + '<div class="form-group">'
-      + '<label for="cname" class="col-sm-2 control-label">Recipient</label>'
+      + '<label for="username" class="col-sm-2 control-label">Recipient</label>'
       + '<div class="col-sm-10">'
-      + '<input type="text" class="form-control" id="cname" placeholder="Receiver\'s Username">'
+      + '<input type="text" class="form-control" id="username" placeholder="Receiver\'s Username">'
       + '</div></div>'
       + '<div class="form-group">'
       + '<label for="start-time" class="col-sm-2 control-label">Commitment</label>'
@@ -512,16 +503,16 @@ var sb_index = function () {
 		for(var c = 0; c < commitments.length; c++){
 		    var com = commitments[c];
 		    html += '<div class="radio"><label>';
-		    html += '<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>';
+		    html += '<input type="radio" name="radioOptions" id="'+com.CID+'" value="'+com.CID+'">';
 		    html += com.CNAME + ", " + convertDay(com.CDAY) + " from " + com.START_TIME + " to " + com.END_TIME;
 		    html += '</label></div>';
 		}
+	}
 
-	    }
-
-      html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10"><br>'
-      html += '<button id="commitment-submit" type="submit" class="btn btn-default">Create Invite</button>'
-	html += '</div></div></form>';
+  html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10"><br>';
+  html += '<button id="invite-submit" type="submit" class="btn btn-default">Create Invite</button>';
+	html += '</div></div>';
+  html += '</form>';
 	html += '</tbody></table></div></div>';
 	html += '<br><a href="#schedules?username='+username + '" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
@@ -529,35 +520,37 @@ var sb_index = function () {
     // update the main page with schedule select page html
 	$( '#main' ).html(html);
 
-	$( '#commitment-submit' ).click(function () {
-	    console.log('clicked');
-	        var 
-            cid,
-            hash = window.location.hash,
-	    sid = hash.substr(hash.indexOf('=')+1),
-            cname = $('#cname').val(),
-            start_time = $('#start-time').val(),
-            end_time = $('#end-time').val(),
-            day = $('#day').val();
+	$( '#invite-create' ).submit(function (event) {
+      event.preventDefault();
+      var
+        iid,
+        cid = $('input[type=radio]:checked', '.radio').val(),
+        iname = $('#iname').val(),
+        recipient_name = $('#username').val();
 
 	    $.ajax({
-		url: 'api/get_max_CID.php',
-		type: 'GET',
-		async: false,
-		success: function (data) {
-		    var json = JSON.parse(data);
-		    cid = parseInt(json['MAX(CID)'][0])+1;
-		}
+		    url: 'api/get_max_IID.php',
+		    type: 'GET',
+		    async: false,
+		    success: function (data) {
+		      var json = JSON.parse(data);
+		      iid = parseInt(json['MAX(IID)'][0])+1;
+		    }
 	    });
 
+      console.log(iid);
+      console.log(cid);
+      console.log(iname);
+      console.log(recipient_name);
+
 	    $.ajax({
-		url: 'api/post_commitment.php?CID='+cid+'&SID='+sid+'&CNAME='+cname+'&START_TIME='+start_time+'&END_TIME='+end_time+'&DAY='+day+'',
-		type: 'GET',
-		async: false,
+		    url: 'api/post_invite.php?IID='+iid+'&CID='+cid+'&INAME='+iname+'&USERNAME='+recipient_name+'',
+		    type: 'GET',
+		    async: false,
 	    });
 	    document.location.reload();
-	});
-    };
+	  });
+  };
 
   // ajax method to GET all the buddies of the logged-in user from backend
   getBuddies = function () {

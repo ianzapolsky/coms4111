@@ -76,7 +76,6 @@
         </tr>
         <tr>
             <td>12:00</td>
-            <td class=" no-events" rowspan="1"></td>
             <td id="d1t9" rowspan="1"></td>
             <td id="d2t9" rowspan="1"></td>
             <td id="d3t9" rowspan="1"></td>
@@ -116,7 +115,6 @@
             <td id="d5t13" rowspan="1"></td>
         <tr>
             <td>14:30</td>
-            <td class=" no-events" rowspan="1"></td>
             <td id="d1t14" rowspan="1"></td>
             <td id="d2t14" rowspan="1"></td>
             <td id="d3t14" rowspan="1"></td>
