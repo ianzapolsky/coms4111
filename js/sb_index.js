@@ -372,6 +372,7 @@ var sb_index = function () {
   };
 
     showMembersPage = function () {
+	refreshCalendar();
 	// makes the schedule appear
 	document.getElementById('calendar').style.display="block";
 
