@@ -21,6 +21,8 @@ var sb_index = function () {
     groups = [],
     // list of users all users
     users = [],
+    // list of members in a currently viewed group
+    members = [],
 
   // methods
   init, convertDay, onHashChange, changePage,
@@ -122,10 +124,11 @@ var sb_index = function () {
   };
 
   showScheduleSelectPage = function (uname) {
+      schedules = [];
 	  getSchedules(uname);
 	  var html = String() 
       + '<div class="jumbotron">'
-      + '<h3>' + username + '\'s Schedules</h3><br>'
+      + '<h3>' + uname + '\'s Schedules</h3><br>'
       + '<p class="text-right"><a href="#createschedule" type="button" class="btn btn-default">Add Schedule</a></p>'
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
@@ -397,36 +400,50 @@ var sb_index = function () {
 
 	    // goes through each member of the group
 	    for (var i = 0; i < members.length; i++){
-	      var m = members[i];
-	      html += '<tr><td>' + (i+1) + '</td> <td>'+m.USERNAME+'</td>';
-
-		// adds each member's commitments to the calendar
-		for(var m = 0; m < members.length; m++){
-			var c = commitments[i];
-			var startcell = (c.START_TIME.substring(0, 2) - 7.5)*2;
-			if(c.START_TIME.substring(2, 4)/60 >= 0.5)
+	        var m = members[i];
+	        html += '<tr><td>' + (i+1) + '</td> <td>'+m.USERNAME+'</td>';
+		
+		getSchedules(m.USERNAME);
+		alert("the number of schedules for " + m.USERNAME + " is " + schedules.length);
+		// adds each member's commitments in schedules to the calendar
+		for(var s = 0; s < schedules.length; s++){
+		    getCommitments(schedules[s].SID);
+		    		    
+		    for(var c = 0; c < commitments.length; c++){
+			var com = commitments[c];
+						
+			var startcell = (com.START_TIME.substring(0, 2) - 7.5)*2;
+			if(com.START_TIME.substring(2, 4)/60 >= 0.5)
 			    startcell+=1;
 
-			var endcell = (c.END_TIME.substring(0, 2) - 7.5)*2;
-			if(c.END_TIME.substring(2, 4)/60 >= 0.5)
+
+			var endcell = (com.END_TIME.substring(0, 2) - 7.5)*2;
+			if(com.END_TIME.substring(2, 4)/60 >= 0.5)
 			    endcell+=1;
 
-			for(var start = startcell; start < endcell + 1; start++)
+			var element = "d" + com.DAY + "t";
+			for(var start = startcell; start < endcell + 1; start++){
+			    alert("elemnt + start = " + element + start);
 			    document.getElementById(element + start).style.background="#e58282";
-
+			    alert("inside colloring loop");
+			}
 		    }
+
+		}
+
 	    }
 	    
 	html += '</tbody></table></div></div>';
 	html += '<br><a href="#groups" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
-    // update the main page with commitment schedule page html
+	// update the main page with commitment schedule page html
 	$( '#main' ).html(html);
 
     };
 
   // ajax method to GET all the buddies of the logged-in user from backend
   getBuddies = function () {
+      buddies = [];
 	  $.ajax({
 	    url: 'api/get_buddies.php?username='+username+'',
 	    type: 'GET',
@@ -441,6 +458,7 @@ var sb_index = function () {
 
   // ajax method to GET all the schedules of the logged-in user from backend
   getSchedules = function (uname) {
+      schedules = [];
 	  $.ajax({
 	    url: 'api/get_schedules.php?username='+uname+'',
 	    type: 'GET',
@@ -456,6 +474,7 @@ var sb_index = function () {
   // ajax method to GET all the commitments for a given schedule, specified by
   // its sid, passed in as a function argument
   getCommitments = function (sid) {
+      commitments = [];
 	  $.ajax({
 	    url: 'api/get_commitments.php?sid='+sid+'',
 	    type: 'GET',
@@ -516,18 +535,18 @@ var sb_index = function () {
   };
 
   // ajax method to GET all the members of a group from backend
-    getMembers = function (all) {
-    // reinitialize groups to an empty array
+    getMembers = function (gid) {
+    // reinitialize members to an empty array
 	members = [];
 
 	    $.ajax({
-		url: 'api/get_members.php?gid='+username+'',
+		url: 'api/get_members.php?gid='+gid+'',
 		type: 'GET',
 		async: false,
 		dataType: 'json',
 		success: function (data) {
 		    for (var i = 0; i < data.length; i++) {
-			groups[i] = data[i];
+			members[i] = data[i];
 		    }
 		}
 	    });
