@@ -18,7 +18,7 @@ if (!$_GET['username']) {
 }
 else {
   // prepare statement
-  $msg = "SELECT iname, username from invites where iid in (select iid from sent_to where username='" . $_GET['username'] . "')";
+  $msg = "SELECT * from invites where iid in (select iid from sent_to where username='" . $_GET['username'] . "')";
   $stid = oci_parse($conn, $msg); 
   if (!$stid) {
     die('Statement preparation failed!');

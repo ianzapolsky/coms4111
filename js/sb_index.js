@@ -466,7 +466,9 @@ var sb_index = function () {
 	var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Your Invites</h3><br>'
-+ '<p class="text-right"><a href="#createinvite" type="button" class="btn btn-default">Create Invite</a></p>'
+	+ '<p class="text-right"><a href="#createcommitment" type="button" class="btn btn-default">Create Commitment</a>    '
++ '<a href="#createinvite" type="button" class="btn btn-default">Create Invite</a></p>'
+
       + '<div class="panel panel-default">'
         + '<div class="panel-body">'
 	        + '<table class="table table-hover"><thead>'
@@ -474,12 +476,18 @@ var sb_index = function () {
             + ' <tr>'
               + '<th>#</th>'
               + '<th>Invite Name</th>'
-	            + '<th> </th>'
+	      + '<th>Day</td>'
+	            + '<th>Start Time</th>'
+	     + '<th>End Time</th>'
             + ' </tr>'
             + '</thead> <tbody>';
+
 	for (var i = 0; i < invites.length; i++) {
-	    html += '<tr><td>'+(i+1)+'</td> <td>'+invites[i].INAME+'</td><td>';
+	    getCommitment(invites[i].CID);
+	    html += '<tr><td>'+(i+1)+'</td> <td>'+invites[i].INAME+'</td><td>' + commitments[0].DAY + '</td>';
+	    html += '<td>' + commitments[0].START_TIME + '</td><td>' + commitments[0].END_TIME + '</td></tr>';
 	}
+
 	html += '</tbody></table></div></div>';
 	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
@@ -616,6 +624,22 @@ var sb_index = function () {
 	  });
   };
 
+  // ajax method to GET all the commitments for a given schedule, specified by
+  // its sid, passed in as a function argument
+    getCommitment = function (cid) {
+	commitments = [];
+	$.ajax({
+	    url: 'api/get_commitment.php?cid='+cid+'',
+	    type: 'GET',
+	    async: false,
+	    dataType: 'json',
+	    success: function (data) {
+		for (var i = 0; i < data.length; i++)
+		    commitments[i] = data[i];
+	    }
+	});
+    };
+
     refreshCalendar = function(){
 	for(var x = 1; x<6; x++){
 	    for(var y = 1; y < 25; y++){
@@ -699,6 +723,7 @@ var sb_index = function () {
       success: function (data) {
         var json = JSON.parse(data);
         sid = parseInt(json['MAX(SID)'][0])+1;
+
       }
     });
     console.log(sid);
