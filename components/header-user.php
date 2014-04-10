@@ -54,9 +54,9 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#usergroups" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
+              <a href="#groups" class="dropdown-toggle" data-toggle="dropdown">Groups<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#usergroups">View Your Groups</a></li>
+                <li><a href="#groups">View Your Groups</a></li>
                 <li><a href="#addCommitment">Join Group</a></li>
               </ul>
             </li>
