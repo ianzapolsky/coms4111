@@ -26,10 +26,11 @@ var sb_index = function () {
   init, convertDay, onHashChange, changePage,
   // ajax
   getBuddies, getSchedules, getCommitments, getGroups, getUsers, postBuddy,
-  deleteBuddy, joinGroup,
+  deleteBuddy, 
   // these are all the pages we would like to implement
-  showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
-  showSchedulePage, showGroupPage, showJoinGroupPage,
+    showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, showCreateCommitmentPage, 
+  showSchedulePage, showGroupPage;
+
 
   showLandPage = function () {
 
@@ -187,7 +188,7 @@ var sb_index = function () {
 	    + '<div class="jumbotron">'
             + '<h3>View Schedule</h3><br><h4>Commitments:</h4>'
 
-	    + '<p class="text-right"><a href="#createschedule" type="button" class="btn btn-default">Add Commitment</a></p>'
+	    + '<p class="text-right"><a href="#createcommitment" type="button" class="btn btn-default">Add Commitment</a></p>'
 	    + '<div class="panel panel-default">'
             + '<div class="panel-body">'
 	    + '<table class="table table-hover"><thead>'
@@ -230,8 +231,62 @@ var sb_index = function () {
 
     };
 
+    showCreateCommitmentPage = function () {
+	var html = String() 
+	    + '<div class="jumbotron">'
+	    + '<h3>Create a Commitment</h3><br>'
+	    + '<form class="form-horizontal" role="form">'
+	    + '<div class="form-group">'
+	    + '<label for="inputEmail3" class="col-sm-2 control-label">Commitment Name</label>'
+	    + '<div class="col-sm-10">'
+	    + '<input type="email" class="form-control" id="inputEmail3" placeholder="Email">'
+	    + '</div></div>'
+	    + '<div class="form-group"><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox1" value="option1"> Monday</label><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Tuesday</label><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Wednesday</label><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Thursday</label><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Friday</label>'
+	    + '</div></div>'
+	    + '<div class="form-group">'
+	    + '<label for="inputPassword3" class="col-sm-2 control-label">Start Time</label>'
+	    + '<div class="col-sm-10">'
+	    + '<input type="password" class="form-control" id="inputPassword3" placeholder="Password">'
+	    + '</div></div>'
+	    + '<div class="form-group">'
+	    + '<label for="inputPassword3" class="col-sm-2 control-label">End Time</label>'
+            + '<div class="col-sm-10">'
+	    + '<input type="password" class="form-control" id="inputPassword3" placeholder="Password">'
+            + '</div></div>';
+	    + '<div class="form-group">'
+            + '<label for="inputPassword3" class="col-sm-2 control-label">Select All Buddies Invited</label>'
+	    + '<div class="col-sm-10">';
+	for (var i = 0; i < buddies.length; i++) {
+	    html += '<div class="checkbox"><label><input type="checkbox" value="">' + buddies[i].USERNAME;
+	    html += '</label></div>';
+	}
+
+	    html += '<div class="form-group">'
+            html += '<label for="inputPassword3" class="col-sm-2 control-label">Select All Groups Invited</label>'
+	    html += '<div class="col-sm-10">';
+	for (var i = 0; i < groups.length; i++) {
+	    html += '<div class="checkbox"><label><input type="checkbox" value="">' + groups[i].GNAME;
+	    html += '</label></div>';
+	}
+	html += </div></div>
+
+	html += </div></div>
+	    html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">'
+            html += '<button type="submit" class="btn btn-default">Create/Send Commitment</button>'
+	    html += '</div></div></form>';
+
+
+	// update the main page with schedule select page html
+	$( '#main' ).html(html);
+    };
+
   showGroupPage = function () {
-	  getGroups(false);
+	  getGroups();
 	  var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Your Groups</h3><br>'
@@ -254,46 +309,23 @@ var sb_index = function () {
 	    html += '<li class="divider"></li>';
 	    html += '<li><a href="#groups" id="'+groups[i].GNAME+'" class="delete-group">Leave Group</a></li>';
 	    html += '</ul></div></td></tr>';
-	  }
-	  html += '</tbody></table></div></div>';
-	  html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+	}
+	html += '</tbody></table></div></div>';
+	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
     // update the main page with buddy page html
-	  $( '#main' ).html(html);
-  };
-
-  showJoinGroupPage = function () {
-    getGroups(true);
-    var html = String()
-      + '<div class="jumbotron">'
-        + '<h3>Join Groups</h3><br>'
-        + '<p class="text-right">'
-        + '<div class="panel panel-default">'
-          + '<div class="panel-body">'
-            + '<table class="table table-hover"><thead>'
-              + '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
-              + ' <tr>'
-              + '<th>#</th>'
-              + '<th>Username</th>'
-          + '<th> </th>'
-        + ' </tr>'
-            + '</thead> <tbody>';
-    for (var i = 0; i < groups.length; i++){
-      html += '<tr><td>' + (i+1) + '</td> <td>' + groups[i].GNAME+'</td><td>';
-      html += '<a id="'+groups[i].GID+'" type="button" class="join-group btn btn-default">Join Group</a>';
-    }
-    html += '</tbody></table></div></div>';
-    html += '<a href="#groups" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
-    // update the main page with buddy page html
-    $( '#main' ).html(html);
-
-    $( '.join-group' ).click(function () {
-      var gid = $(this).attr("id");
-      joinGroup(gid);
-      document.location.hash = '#groups';
-    });
-  };
-
+	$( '#main' ).html(html);
+  
+	$( '.delete-group' ).click(function () {
+	    var gname = $(this).attr("id");
+	    $.ajax({
+		  url: 'api/delete_group.php?username='+username+'&group='+gname+'',
+		  type: 'GET',
+		  async: false,
+	    });
+	    document.location.reload();
+	  });
+    };
 
   // ajax method to GET all the buddies of the logged-in user from backend
   getBuddies = function () {
@@ -339,43 +371,19 @@ var sb_index = function () {
   };
 
   // ajax method to GET all the schedules of the logged-in user from backend
-  getGroups = function (all) {
-    // reinitialize groups to an empty array
-    groups = [];
-    if (all === true) {
-	    $.ajax({
-	      url: 'api/get_groups.php',
-	      type: 'GET',
-	      async: false,
-	      dataType: 'json',
-	      success: function (data) {
-		      for (var i = 0; i < data.length; i++) {
-		        groups[i] = data[i];
-	        }
-        }
-	    });
-    } else {
-	    $.ajax({
-	      url: 'api/get_groups.php?username='+username+'',
-	      type: 'GET',
-	      async: false,
-	      dataType: 'json',
-	      success: function (data) {
-		      for (var i = 0; i < data.length; i++) {
-		        groups[i] = data[i];
-	        }
-        }
-	    });
-    }
+  getGroups = function () {
+	  $.ajax({
+	    url: 'api/get_groups.php?username='+username+'',
+	    type: 'GET',
+	    async: false,
+	    dataType: 'json',
+	    success: function (data) {
+		    for (var i = 0; i < data.length; i++) {
+		      groups[i] = data[i];
+	      }
+      }
+	  });
   }; 
-
-  joinGroup = function (gid) {
-    $.ajax({
-      url: 'api/join_group.php?username='+username+'&gid='+gid+'',
-      type: 'GET',
-      async: false,
-    });
-  };
 
   // ajax method to GET all the users from the backend
   getUsers = function () {
@@ -446,10 +454,10 @@ var sb_index = function () {
 	    showCreateSchedulePage();
 	  else if (newHash.substr(0,15) === '#schedules?sid=')
 	    showSchedulePage();
-	  else if (newHash === '#groups')
+      else if (newHash === '#createcommitment')
+	  createCommitmentPage();
+	  else if (newHash.substr(0,17) === '#groups?username=')
 	    showGroupPage();
-    else if (newHash === '#joingroup')
-      showJoinGroupPage();
 	  else
 	    showLandPage();
   };
