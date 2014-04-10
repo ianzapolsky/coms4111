@@ -26,7 +26,7 @@ var sb_index = function () {
   init, convertDay, onHashChange, changePage,
   // ajax
   getBuddies, getSchedules, getCommitments, getGroups, getUsers, postBuddy,
-  deleteBuddy, deleteSchedule,
+  deleteBuddy, 
   // these are all the pages we would like to implement
   showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
   showSchedulePage, showGroupPage;
@@ -39,15 +39,9 @@ var sb_index = function () {
         + '<div class="jumbotron">'
           + '<h2>Welcome, '+username+'!</h2>'
           + '<ul class="list-unstyled" style="margin-left: 20px;">'
-<<<<<<< HEAD
             +'<li><h2><a href="#buddies">Buddies</a></h2></li>'
 	          +'<li><h2><a href="#schedules">Schedules</a></h2></li>'
 	          +'<li><h2><a href="#groups">Groups</a></h2></li>'
-=======
-            +'<li><h3><a href="#buddies">Buddies</a></h3></li>'
-	    +'<li><h3><a href="#schedules?username='+username+'">Schedules</a></h3></li>'
-	    +'<li><h3><a href="#groups?username=' + username + '"">Groups</a></h3></li>'
->>>>>>> 871eaad52c33081942cce9201340e35f39f89d3a
           + '</ul>'
         + '</div>'
 
@@ -147,7 +141,7 @@ var sb_index = function () {
 	  for (var i = 0; i < schedules.length; i++){
 	    html += '<tr><td>' + (i+1) + '</td> <td>'+schedules[i].SNAME+'</td><td class="text-right">';
 	    html += '<a href="#schedules?sid='+schedules[i].SID+'" type="button" class="btn btn-default">View</a> ';
-	    html += '<a href="#schedules" id="'+schedules[i].SID+'" class="delete-schedule btn btn-danger" type="button">Delete</a>';
+	    html += '<a href="#schedules" id="'+schedules[i].SID+'" class="btn btn-danger" type="button">Delete</a>';
 	    html += '</td></tr>';
 	  }
 	  html += '</tbody></table></div></div>';
@@ -156,11 +150,6 @@ var sb_index = function () {
     // update the main page with schedule select page html
 	  $( '#main' ).html(html);
 
-    $( '.delete-schedule' ).click(function () {
-      var sid = $(this).attr("id");
-      deleteSchedule(sid);
-	    document.location.reload();
-    });
   };
 
   showCreateSchedulePage = function () {
@@ -202,7 +191,6 @@ var sb_index = function () {
 	    + '<div class="panel panel-default">'
             + '<div class="panel-body">'
 	    + '<table class="table table-hover"><thead>'
-	//+ '<colgroup><col class="col-xs-1"><col class="col-xs-4"><col class="col-xs-4"></colgroup>'
             + ' <tr>'
 	    + '<th>#</th>'
             + '<th>Commitment Name</th>'
@@ -218,7 +206,7 @@ var sb_index = function () {
 	    html += '<tr><td>' + (i+1) + '</td> <td>'+c.CNAME+'</td>';
 	    html += '<td>' + convertDay(c.DAY) + '</td><td>' + c.START_TIME + '</td><td>' + c.END_TIME + '</td>';
 	    html += '<td class="text-right">';
-	    html += '<a href="#deleteschedule?sid='+schedules[i].SID+'" type="button" class="btn btn-danger">Delete</a>';
+	    html += '<a href="#schedules" type="button" class="btn btn-danger">Delete</a>';
 	    html += '</td></tr>';
 	    var element = "d" + c.DAY + "t";
 	    
@@ -235,7 +223,7 @@ var sb_index = function () {
 
 	}
 	html += '</tbody></table></div></div>';
-	html += '<br><a href="#schedules?username=' + username + '" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+	html += '<br><a href="#schedules" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
     // update the main page with commitment schedule page html
 	$( '#main' ).html(html);
@@ -377,14 +365,6 @@ var sb_index = function () {
 	  });
   };
     
-  deleteSchedule = function (sid) {
-    $.ajax({
-      url: 'api/delete_schedule.php?sid='+sid+'',
-      type: 'GET',
-      async: false,
-    });
-  };
-
   convertDay = function (day_num) {
 	switch (day_num) {
 	case '1': 
@@ -404,8 +384,8 @@ var sb_index = function () {
 	  changePage( document.location.hash );
   };
 
-    changePage = function (newHash) {
-	document.getElementById('calendar').style.display="none";
+  changePage = function (newHash) {
+	  //document.getElementById('calendar').style.display="none";
 
 	if (newHash === '#buddies')
 	    showBuddyPage();
