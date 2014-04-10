@@ -28,7 +28,7 @@ var sb_index = function () {
   getBuddies, getSchedules, getCommitments, getGroups, getUsers, postBuddy,
   deleteBuddy, joinGroup, leaveGroup, postSchedule, getMaxSID,
   // these are all the pages we would like to implement
-  showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
+    showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, showCreateCommitmentPage,
   showSchedulePage, showGroupPage, showJoinGroupPage,
 
   showLandPage = function () {
@@ -194,7 +194,7 @@ var sb_index = function () {
 	    + '<div class="jumbotron">'
             + '<h3>View Schedule</h3><br><h4>Commitments:</h4>'
 
-	    + '<p class="text-right"><a href="#createschedule" type="button" class="btn btn-default">Add Commitment</a></p>'
+	    + '<p class="text-right"><a href="#createcommitment" type="button" class="btn btn-default">Add Commitment</a></p>'
 	    + '<div class="panel panel-default">'
             + '<div class="panel-body">'
 	    + '<table class="table table-hover"><thead>'
@@ -230,11 +230,70 @@ var sb_index = function () {
 
 	}
 	html += '</tbody></table></div></div>';
-	html += '<br><a href="#schedules" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+	html += '<br><a href="#schedules?username='+username + '" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
     // update the main page with commitment schedule page html
 	$( '#main' ).html(html);
 
+    };
+
+
+    showCreateCommitmentPage = function () {
+	getBuddies();
+	getGroups();
+	var html = String() 
+	    + '<div class="jumbotron">'
+	    + '<h3>Create a Commitment</h3><br>'
+	    + '<form class="form-horizontal" role="form">'
+	    + '<div class="form-group">'
+	    + '<label for="inputEmail3" class="col-sm-2 control-label">Commitment Name</label>'
+	    + '<div class="col-sm-10">'
+	    + '<input type="email" class="form-control" id="inputEmail3" placeholder="Email">'
+	    + '</div></div>'
+	    + '<div class="form-group text-center"><div class="col-sm-10"><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox1" value="option1"> Monday</label><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Tuesday</label><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Wednesday</label><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Thursday</label><label class="checkbox-inline">'
+	    + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Friday</label>'
+	    + '</div></div>'
+	    + '<div class="form-group">'
+	    + '<label for="inputPassword3" class="col-sm-2 control-label">Start Time</label>'
+	    + '<div class="col-sm-10">'
+	    + '<input type="password" class="form-control" id="inputPassword3" placeholder="Password">'
+	    + '</div></div>'
+	    + '<div class="form-group">'
+	    + '<label for="inputPassword3" class="col-sm-2 control-label">End Time</label>'
+            + '<div class="col-sm-10">'
+	    + '<input type="password" class="form-control" id="inputPassword3" placeholder="Password">'
+            + '</div></div>'
+	    + '<div class="form-group">'
+            + '<label for="inputPassword3" class="col-sm-2 control-label">Select All Buddies Invited</label>'
+	    + '<div class="col-sm-10">';
+
+	    
+	for (var i = 0; i < buddies.length; i++) {
+	    html += '<div class="checkbox"><label><input type="checkbox" value="">' + buddies[i].USERNAME;
+	    html += '</label></div>';
+	}
+
+	    html += '</div></div><div class="form-group">'
+            html += '<label for="inputPassword3" class="col-sm-2 control-label">Select All Groups Invited</label>'
+	    html += '<div class="col-sm-10">';
+
+	for (var i = 0; i < groups.length; i++) {
+	    html += '<div class="checkbox"><label><input type="checkbox" value="">' + groups[i].GNAME;
+	    html += '</label></div>';
+	}
+
+	html += '</div></div>';
+	html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">';
+        html += '<button type="submit" class="btn btn-default">Create/Send Commitment</button>';
+	html += '</div></div></form>';
+
+
+	// update the main page with schedule select page html
+	$( '#main' ).html(html);
     };
 
   showGroupPage = function () {
@@ -477,28 +536,31 @@ var sb_index = function () {
   };
 
   changePage = function (newHash) {
-	  //document.getElementById('calendar').style.display="none";
+	  document.getElementById('calendar').style.display="none";
 	  if (newHash === '#buddies')
 	    showBuddyPage();
 	  else if(newHash === '#addbuddy')
 	    showAddBuddyPage();
 	  else if (newHash.substr(0,20) === '#schedules?username=') {
-      uname = newHash.substr(newHash.indexOf('=')+1);
-	    showScheduleSelectPage(uname);
-    }
+	      uname = newHash.substr(newHash.indexOf('=')+1);
+	      showScheduleSelectPage(uname);
+	  }
 	  else if (newHash === '#createschedule')
 	    showCreateSchedulePage();
 	  else if (newHash.substr(0,15) === '#schedules?sid=')
 	    showSchedulePage();
+          else if (newHash === '#createcommitment')
+	    showCreateCommitmentPage();
 	  else if (newHash === '#groups')
 	    showGroupPage();
-    else if (newHash === '#joingroup')
-      showJoinGroupPage();
+          else if (newHash === '#joingroup')
+	    showJoinGroupPage();
 	  else
 	    showLandPage();
   };
 
   init = function (session_username) {
+      document.getElementById('calendar').style.display="none";
     // set the username associated with the session
 	  username = session_username;
     // add asynchronous events here
