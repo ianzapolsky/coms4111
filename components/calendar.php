@@ -2,11 +2,11 @@
     <thead>
         <tr>
             <th>&nbsp;</th>
-            <th class="text-center" width="20%">Sunday</th>
             <th class="text-center" width="20%">Monday</th>
             <th class="text-center" width="20%">Tuesday</th>
             <th class="text-center" width="20%">Wednesday</th>
             <th class="text-center" width="20%">Thursday</th>
+	    <th class="text-center" width="20%">Friday</th>
         </tr>
     </thead>
     <tbody>
