@@ -26,7 +26,7 @@ var sb_index = function () {
   init, convertDay, onHashChange, changePage,
   // ajax
   getBuddies, getSchedules, getCommitments, getGroups, getUsers, postBuddy,
-  deleteBuddy, joinGroup,
+  deleteBuddy, joinGroup, leaveGroup, postSchedule, getMaxSID,
   // these are all the pages we would like to implement
   showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
   showSchedulePage, showGroupPage, showJoinGroupPage,
@@ -156,17 +156,24 @@ var sb_index = function () {
 	  var html = String() 
 	    + '<div class="jumbotron">'
 	    + '<h3>Create a Schedule</h3><br>'
-	    + '<form role="form">'
+	    + '<form id="create-schedule" role="form">'
 	    + '<div class="form-group">'
-	    + '<label for="exampleInputEmail1">Schedule Name</label>'
-	    + '<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Schedule Name">'
+	    + '<label for="">Schedule Name</label>'
+	    + '<input type="text" class="form-control" id="sname" placeholder="Enter Schedule Name">'
 	    + '</div>'
-	    + '<p class="text-right"><button type="submit" class="btn btn-default">Submit</button></p>'
+	    + '<p class="text-right"><button href="#schedules" type="submit" class="btn btn-default">Submit</button></p>'
 	    + '</form>'
 	    + '<a href="#schedules" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
 	  // update the main page with schedule select page html
 	  $( '#main' ).html(html);
+  
+    $( '#create-schedule' ).submit(function (event) {
+      var sname = $( '#sname' ).val();
+      postSchedule(sname);
+      document.location.hash = '#schedules?username='+username;
+    });
+
   };
 
   showSchedulePage = function () {
@@ -252,7 +259,7 @@ var sb_index = function () {
 	    html += '<ul class="dropdown-menu" role="menu">';
 	    html += '<li><a href="#schedules?username='+groups[i].GNAME+'">View Members</a></li>';
 	    html += '<li class="divider"></li>';
-	    html += '<li><a href="#groups" id="'+groups[i].GNAME+'" class="delete-group">Leave Group</a></li>';
+	    html += '<li><a href="#groups" id="'+groups[i].GID+'" class="leave-group">Leave Group</a></li>';
 	    html += '</ul></div></td></tr>';
 	  }
 	  html += '</tbody></table></div></div>';
@@ -260,6 +267,12 @@ var sb_index = function () {
 
     // update the main page with buddy page html
 	  $( '#main' ).html(html);
+
+    $( '.leave-group' ).click(function() {
+      var gid = $(this).attr('id');
+      leaveGroup(gid);
+      document.location.reload();
+    });
   };
 
   showJoinGroupPage = function () {
@@ -377,6 +390,38 @@ var sb_index = function () {
     });
   };
 
+  leaveGroup = function (gid) {
+    $.ajax({
+      url: 'api/leave_group.php?username='+username+'&gid='+gid+'',
+      type: 'GET',
+      async: false,
+    });
+  };
+
+  postSchedule = function (sname) {
+    var sid;
+    $.ajax({
+      url: 'api/get_max_SID.php',
+      type: 'GET',
+      async: false,
+      success: function (data) {
+        var json = JSON.parse(data);
+        sid = parseInt(json['MAX(SID)'][0])+1;
+      }
+    });
+    console.log(sid);
+    console.log(username);
+    console.log(sname);
+    $.ajax({
+      url: 'api/post_schedule.php?SID='+String(sid)+'&USERNAME='+username+'&SNAME='+sname+'',
+      type: 'GET',
+      async: false,
+      success: function () {
+        console.log('success');
+      }
+    });
+  };
+
   // ajax method to GET all the users from the backend
   getUsers = function () {
 	  $.ajax({
@@ -439,7 +484,6 @@ var sb_index = function () {
 	    showAddBuddyPage();
 	  else if (newHash.substr(0,20) === '#schedules?username=') {
       uname = newHash.substr(newHash.indexOf('=')+1);
-      console.log(uname);
 	    showScheduleSelectPage(uname);
     }
 	  else if (newHash === '#createschedule')
