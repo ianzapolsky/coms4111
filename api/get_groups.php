@@ -15,7 +15,11 @@ if (!$conn) {
 
 // check for username
 if (!$_GET['username']) {
-  die('No username provided!');
+  $msg = "SELECT * from groups";
+  $stid = oci_parse($conn, $msg);
+  if (!$stid) {
+    die('Statement preperation failed!');
+  }
 }
 else {
   // prepare statement
