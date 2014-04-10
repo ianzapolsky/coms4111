@@ -60,6 +60,12 @@
                 <li><a href="#addCommitment">Join Group</a></li>
               </ul>
             </li>
+            <li class="dropdown">
+              <a href="#invites" class="dropdown-toggle" data-toggle="dropdown">Invites <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#invites">View Invites</a></li>
+              </ul>
+            </li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">

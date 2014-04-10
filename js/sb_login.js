@@ -35,9 +35,6 @@ var sb_login = function() {
                 + '<div id="pword-div">'
                   + '<input type="password" class="form-control" placeholder="Password" id="password" name="password" required>'
                 + '</div>'
-                + '<label class="checkbox">'
-                  + '<input type="checkbox" value="remember-me">Remember me'
-                + '</label>'
                 + '<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>'
               + '</form>'
             + '</div>'
@@ -69,25 +66,12 @@ var sb_login = function() {
               + '<input type="password" class="form-control" placeholder="Password" '
               + 'id="password" name="password" required></div>'
             + '</div>'
-            + '<div class="form-group" id="confirm-pword-div">'
-              + '<label for="password" class="col-sm-2 control-label">Confirm Password</label><div class="col-sm-10">'
-              + '<input type="password" class="form-control" placeholder="Password" '
-              + 'id="confirm-password" name="confirm-password" required></div>'
-            + '<div class="registrationFormAlert" id="divCheckPasswordMatch"></div>'
-            + '</div>'
             + '<p class="text-center">'
-            + '<a href="#" class="btn btn-lg btn-default" ng-click="getstarted = !getstarted" type="reset">&lArr; Go Back</a>  '
-            + '<button class="btn btn-lg btn-primary" type="submit" onclick="checkPasswordMatch()">Create User</button>'
+            + '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a>  '
+            + '<button class="btn btn-lg btn-primary" type="submit">Create User</button>'
           + '</p></form>'
         + '</div>'
 
-      function checkPasswordMatch() {
-	  var password = $("#password").val();
-	  var confirmPassword = $("#confirm-password").val();
-
-	  if (password != confirmPassword)
-	      alert("Passwords do not match!");
-      }
 
     // update main div with create page html
     $( '#main' ).html(html);

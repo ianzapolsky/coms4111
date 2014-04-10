@@ -23,6 +23,8 @@ var sb_index = function () {
     users = [],
     // list of members in a currently viewed group
     members = [],
+    // list of invites for the logged in user
+    invites = [],
 
   // methods
   init, convertDay, onHashChange, changePage,
@@ -31,7 +33,7 @@ var sb_index = function () {
   deleteBuddy, joinGroup, leaveGroup, postSchedule, getMaxSID,
   // these are all the pages we would like to implement
   showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, 
-  showSchedulePage, showGroupPage, showJoinGroupPage, showCreateCommitmentPage,
+    showSchedulePage, showGroupPage, showJoinGroupPage, showCreateCommitmentPage, showInvitesPage,
   showCreateSchedulePage, showMembersPage;
 
   showLandPage = function () {
@@ -187,7 +189,10 @@ var sb_index = function () {
       + '<div class="form-group">'
       + '<label for="cname" class="col-sm-2 control-label">Commitment Name</label>'
       + '<div class="col-sm-10">'
-      + '<input type="text" class="form-control" id="cname" placeholder="Commitment Name">'
+      + '<input type="text" class="form-control" id="cname" placeholder="Commitment Name"></div></div>'
+      + '<div class="form-group">'
+      + '<label for="cname" class="col-sm-2 control-label">Day</label>'
+      + '<div class="col-sm-10">'
       + '<input type="text" class="form-control" id="day" placeholder="Day (1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday)">'
       + '</div></div>'
       /*
@@ -198,16 +203,15 @@ var sb_index = function () {
       + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Thursday</label><label class="checkbox-inline">'
       + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Friday</label>'
       */
-      + '</div></div>'
       + '<div class="form-group">'
       + '<label for="start-time" class="col-sm-2 control-label">Start Time</label>'
       + '<div class="col-sm-10">'
-      + '<input type="text" class="form-control" id="start-time" placeholder="Start Time">'
+      + '<input type="text" class="form-control" id="start-time" placeholder="Start Time (ex. 11:30AM = 1130, 3:30PM = 1530)">'
       + '</div></div>'
       + '<div class="form-group">'
       + '<label for="end-time" class="col-sm-2 control-label">End Time</label>'
             + '<div class="col-sm-10">'
-      + '<input type="text" class="form-control" id="end-time" placeholder="End Time">'
+      + '<input type="text" class="form-control" id="end-time" placeholder="End Time (ex. 11:30AM = 1130, 3:30PM = 1530)">'
             + '</div></div>';
       html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">'
       html += '<button id="commitment-submit" type="submit" class="btn btn-default">Create Commitment</button>'
@@ -307,67 +311,6 @@ var sb_index = function () {
 	$( '#main' ).html(html);
 
     };
-
-  /*
-  showCreateCommitmentPage = function () {
-	getBuddies();
-	getGroups();
-	var html = String() 
-	    + '<div class="jumbotron">'
-	    + '<h3>Create a Commitment</h3><br>'
-	    + '<form class="form-horizontal" role="form">'
-	    + '<div class="form-group">'
-	    + '<label for="inputEmail3" class="col-sm-2 control-label">Commitment Name</label>'
-	    + '<div class="col-sm-10">'
-	    + '<input type="email" class="form-control" id="inputEmail3" placeholder="Email">'
-	    + '</div></div>'
-	    + '<div class="form-group text-center"><div class="col-sm-10"><label class="checkbox-inline">'
-	    + '<input type="checkbox" id="inlineCheckbox1" value="option1"> Monday</label><label class="checkbox-inline">'
-	    + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Tuesday</label><label class="checkbox-inline">'
-	    + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Wednesday</label><label class="checkbox-inline">'
-	    + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Thursday</label><label class="checkbox-inline">'
-	    + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Friday</label>'
-	    + '</div></div>'
-	    + '<div class="form-group">'
-	    + '<label for="inputPassword3" class="col-sm-2 control-label">Start Time</label>'
-	    + '<div class="col-sm-10">'
-	    + '<input type="password" class="form-control" id="inputPassword3" placeholder="Password">'
-	    + '</div></div>'
-	    + '<div class="form-group">'
-	    + '<label for="inputPassword3" class="col-sm-2 control-label">End Time</label>'
-            + '<div class="col-sm-10">'
-	    + '<input type="password" class="form-control" id="inputPassword3" placeholder="Password">'
-            + '</div></div>'
-	    + '<div class="form-group">'
-            + '<label for="inputPassword3" class="col-sm-2 control-label">Select All Buddies Invited</label>'
-	    + '<div class="col-sm-10">';
-
-	    
-	for (var i = 0; i < buddies.length; i++) {
-	    html += '<div class="checkbox"><label><input type="checkbox" value="">' + buddies[i].USERNAME;
-	    html += '</label></div>';
-	}
-
-	    html += '</div></div><div class="form-group">'
-            html += '<label for="inputPassword3" class="col-sm-2 control-label">Select All Groups Invited</label>'
-	    html += '<div class="col-sm-10">';
-
-	for (var i = 0; i < groups.length; i++) {
-	    html += '<div class="checkbox"><label><input type="checkbox" value="">' + groups[i].GNAME;
-	    html += '</label></div>';
-	}
-
-	html += '</div></div>';
-	html += '<br><div class="form-group">';
-        html += '<button type="submit" class="btn btn-primary btn-block">Create/Send Commitment</button>';
-	html += '</div></form>';
-	html += '</tbody></table></div></div>';
-	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
-
-	// update the main page with schedule select page html
-	$( '#main' ).html(html);
-    };
-  */
 
   showGroupPage = function () {
 	  getGroups(false);
@@ -507,6 +450,39 @@ var sb_index = function () {
 	$( '#main' ).html(html);
 
   };
+
+    showInvitesPage = function () {
+	invites = [];
+	getInvites();
+	var html = String() 
+      + '<div class="jumbotron">'
+      + '<h3>Your Invites</h3><br>'
+      + '<div class="panel panel-default">'
+        + '<div class="panel-body">'
+	        + '<table class="table table-hover"><thead>'
+	          + '<colgroup><col class="col-xs-1"><col class="col-xs-7"><col class="col-xs-1"></colgroup>'
+            + ' <tr>'
+              + '<th>#</th>'
+              + '<th>Invite Name</th>'
+	            + '<th> </th>'
+            + ' </tr>'
+            + '</thead> <tbody>';
+	for (var i = 0; i < invites.length; i++) {
+	    html += '<tr><td>'+(i+1)+'</td> <td>'+invites[i].INAME+'</td><td>';
+	}
+	html += '</tbody></table></div></div>';
+	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+
+    // update the main page with buddy page html
+	$( '#main' ).html(html);
+  
+	$( '.delete-invite' ).click(function () {
+	    var username2 = $(this).attr("id");
+	    deleteInvite(username, username2);
+	    document.location.reload();
+	});
+    };
+
 
   // ajax method to GET all the buddies of the logged-in user from backend
   getBuddies = function () {
@@ -652,6 +628,21 @@ var sb_index = function () {
     });
   };
 
+  // ajax method to GET all the invites of the logged-in user from backend
+    getInvites = function () {
+	invites = [];
+	$.ajax({
+	    url: 'api/get_invites.php?username='+username+'',
+	    type: 'GET',
+	    async: false,
+	    dataType: 'json',
+	    success: function (data) {
+		for (var i = 0; i < data.length; i++)
+		    invites[i] = data[i];
+	    }
+	});
+    };
+
   // ajax method to GET all the users from the backend
   getUsers = function () {
 	  $.ajax({
@@ -718,8 +709,8 @@ var sb_index = function () {
 	  }
 	  else if (newHash === '#createschedule')
 	    showCreateSchedulePage();
-    else if (newHash.substr(0,17) === '#createcommitment')
-      showCreateCommitmentPage();
+          else if (newHash.substr(0,17) === '#createcommitment')
+            showCreateCommitmentPage();
 	  else if (newHash.substr(0,15) === '#schedules?sid=')
 	    showSchedulePage();
           else if(newHash.substr(0, 13) === '#members?gid=')
@@ -730,6 +721,8 @@ var sb_index = function () {
 	    showGroupPage();
           else if (newHash === '#joingroup')
 	    showJoinGroupPage();
+          else if (newHash === '#invites')
+	    showInvitesPage();
 	  else
 	    showLandPage();
   };
