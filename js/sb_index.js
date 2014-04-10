@@ -180,7 +180,7 @@ var sb_index = function () {
   };
 
   showCreateCommitmentPage = function () {
-  var html = String() 
+    var html = String() 
       + '<div class="jumbotron">'
       + '<h3>Create a Commitment</h3><br>'
       + '<form id="commitment-create" class="form-horizontal" role="form">'
@@ -188,13 +188,16 @@ var sb_index = function () {
       + '<label for="cname" class="col-sm-2 control-label">Commitment Name</label>'
       + '<div class="col-sm-10">'
       + '<input type="text" class="form-control" id="cname" placeholder="Commitment Name">'
+      + '<input type="text" class="form-control" id="day" placeholder="Day (1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday)">'
       + '</div></div>'
+      /*
       + '<div class="form-group"><label class="checkbox-inline">'
       + '<input type="checkbox" id="inlineCheckbox1" value="option1"> Monday</label><label class="checkbox-inline">'
       + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Tuesday</label><label class="checkbox-inline">'
       + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Wednesday</label><label class="checkbox-inline">'
       + '<input type="checkbox" id="inlineCheckbox2" value="option2"> Thursday</label><label class="checkbox-inline">'
       + '<input type="checkbox" id="inlineCheckbox3" value="option3"> Friday</label>'
+      */
       + '</div></div>'
       + '<div class="form-group">'
       + '<label for="start-time" class="col-sm-2 control-label">Start Time</label>'
@@ -206,14 +209,41 @@ var sb_index = function () {
             + '<div class="col-sm-10">'
       + '<input type="text" class="form-control" id="end-time" placeholder="End Time">'
             + '</div></div>';
-
       html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">'
-            html += '<button type="submit" class="btn btn-default">Create Commitment</button>'
+      html += '<button id="commitment-submit" type="submit" class="btn btn-default">Create Commitment</button>'
       html += '</div></div></form>';
-
 
     // update the main page with schedule select page html
     $( '#main' ).html(html);
+
+    $( '#commitment-submit' ).click(function () {
+      console.log('clicked');
+	    var 
+        cid,
+        hash = window.location.hash,
+	      sid = hash.substr(hash.indexOf('=')+1),
+        cname = $('#cname').val(),
+        start_time = $('#start-time').val(),
+        end_time = $('#end-time').val(),
+        day = $('#day').val();
+
+      $.ajax({
+        url: 'api/get_max_CID.php',
+        type: 'GET',
+        async: false,
+        success: function (data) {
+          var json = JSON.parse(data);
+          cid = parseInt(json['MAX(CID)'][0])+1;
+        }
+      });
+
+      $.ajax({
+        url: 'api/post_commitment.php?CID='+cid+'&SID='+sid+'&CNAME='+cname+'&START_TIME='+start_time+'&END_TIME='+end_time+'&DAY='+day+'',
+        type: 'GET',
+        async: false,
+      });
+      document.location.reload();
+    });
   };
 
   showSchedulePage = function () {
@@ -235,7 +265,7 @@ var sb_index = function () {
 	    + '<div class="jumbotron">'
             + '<h3>View Schedule</h3><br><h4>Commitments:</h4>'
 
-	    + '<p class="text-right"><a href="#createcommitment" type="button" class="btn btn-default">Add Commitment</a></p>'
+	    + '<p class="text-right"><a href="#createcommitment?sid='+sid+'" type="button" class="btn btn-default">Add Commitment</a></p>'
 	    + '<div class="panel panel-default">'
             + '<div class="panel-body">'
 	    + '<table class="table table-hover"><thead>'
@@ -278,8 +308,8 @@ var sb_index = function () {
 
     };
 
-
-    showCreateCommitmentPage = function () {
+  /*
+  showCreateCommitmentPage = function () {
 	getBuddies();
 	getGroups();
 	var html = String() 
@@ -334,10 +364,10 @@ var sb_index = function () {
 	html += '</tbody></table></div></div>';
 	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
-
 	// update the main page with schedule select page html
 	$( '#main' ).html(html);
     };
+  */
 
   showGroupPage = function () {
 	  getGroups(false);
@@ -444,7 +474,6 @@ var sb_index = function () {
 	        html += '<tr><td>' + (i+1) + '</td> <td>'+m.USERNAME+'</td>';
 		
 		getSchedules(m.USERNAME);
-		alert("the number of schedules for " + m.USERNAME + " is " + schedules.length);
 		// adds each member's commitments in schedules to the calendar
 		for(var s = 0; s < schedules.length; s++){
 		    getCommitments(schedules[s].SID);
@@ -463,9 +492,7 @@ var sb_index = function () {
 
 			var element = "d" + com.DAY + "t";
 			for(var start = startcell; start < endcell + 1; start++){
-			    alert("elemnt + start = " + element + start);
 			    document.getElementById(element + start).style.background="#e58282";
-			    alert("inside colloring loop");
 			}
 		 }
 
@@ -691,7 +718,7 @@ var sb_index = function () {
 	  }
 	  else if (newHash === '#createschedule')
 	    showCreateSchedulePage();
-    else if (newHash === '#createcommitment')
+    else if (newHash.substr(0,17) === '#createcommitment')
       showCreateCommitmentPage();
 	  else if (newHash.substr(0,15) === '#schedules?sid=')
 	    showSchedulePage();
