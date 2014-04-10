@@ -29,7 +29,7 @@ var sb_index = function () {
   deleteBuddy, joinGroup, leaveGroup, postSchedule, getMaxSID,
   // these are all the pages we would like to implement
     showLandPage, showBuddyPage, showAddBuddyPage, showScheduleSelectPage, showCreateCommitmentPage,
-  showSchedulePage, showGroupPage, showJoinGroupPage,
+    showSchedulePage, showGroupPage, showJoinGroupPage, showMembersPage,
 
   showLandPage = function () {
 
@@ -70,7 +70,6 @@ var sb_index = function () {
 	    html += '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Options <span class="caret"></span></button>';
 	    html += '<ul class="dropdown-menu" role="menu">';
 	    html += '<li><a href="#schedules?username='+buddies[i].USERNAME+'">View Schedules</a></li>';
-	    html += '<li><a href="#">Send Invite</a></li>';
 	    html += '<li class="divider"></li>';
 	    html += '<li><a href="#buddies" id="'+buddies[i].USERNAME+'" class="delete-buddy">Delete Buddy</a></li>';
 	    html += '</ul></div></td></tr>';
@@ -287,9 +286,11 @@ var sb_index = function () {
 	}
 
 	html += '</div></div>';
-	html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">';
-        html += '<button type="submit" class="btn btn-default">Create/Send Commitment</button>';
-	html += '</div></div></form>';
+	html += '<br><div class="form-group">';
+        html += '<button type="submit" class="btn btn-primary btn-block">Create/Send Commitment</button>';
+	html += '</div></form>';
+	html += '</tbody></table></div></div>';
+	html += '<a href="#" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
 
 
 	// update the main page with schedule select page html
@@ -316,7 +317,7 @@ var sb_index = function () {
 	    html += '<tr><td>'+(i+1)+'</td> <td>'+groups[i].GNAME+'</td><td>';
 	    html += '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Options <span class="caret"></span></button>';
 	    html += '<ul class="dropdown-menu" role="menu">';
-	    html += '<li><a href="#schedules?username='+groups[i].GNAME+'">View Members</a></li>';
+	    html += '<li><a href="#members?gid='+groups[i].GID+'">View Members</a></li>';
 	    html += '<li class="divider"></li>';
 	    html += '<li><a href="#groups" id="'+groups[i].GID+'" class="leave-group">Leave Group</a></li>';
 	    html += '</ul></div></td></tr>';
@@ -366,6 +367,63 @@ var sb_index = function () {
     });
   };
 
+    showMembersPage = function () {
+	// makes the schedule appear
+	document.getElementById('calendar').style.display="block";
+
+	// kind of a hacky way of obtaining the sid of a schedule from a URL GET
+	// parameter. basically this code takes a url '#schedules?sid=4' and
+	// sets the variable sid equal to 4.
+	var hash = window.location.hash;
+	var gid = hash.substr(hash.indexOf('=')+1);
+
+	// get all the commitments for the given schedule
+	getMembers(gid);
+
+	// build the HTML representation of the schedule
+	var html = String() 
+	    + '<div class="jumbotron">'
+            + '<h3>View Members</h3><br>'
+
+	    + '<p class="text-right"><a href="#createcommitment" type="button" class="btn btn-default">Add Commitment</a></p>'
+	    + '<div class="panel panel-default">'
+            + '<div class="panel-body">'
+	    + '<table class="table table-hover"><thead>'
+            + ' <tr>'
+	    + '<th>#</th>'
+            + '<th>Member Name</th>'
+            + ' </tr>'
+            + '</thead> <tbody>';
+
+	    // goes through each member of the group
+	    for (var i = 0; i < members.length; i++){
+	      var m = members[i];
+	      html += '<tr><td>' + (i+1) + '</td> <td>'+m.USERNAME+'</td>';
+
+		// adds each member's commitments to the calendar
+		for(var m = 0; m < members.length; m++){
+			var c = commitments[i];
+			var startcell = (c.START_TIME.substring(0, 2) - 7.5)*2;
+			if(c.START_TIME.substring(2, 4)/60 >= 0.5)
+			    startcell+=1;
+
+			var endcell = (c.END_TIME.substring(0, 2) - 7.5)*2;
+			if(c.END_TIME.substring(2, 4)/60 >= 0.5)
+			    endcell+=1;
+
+			for(var start = startcell; start < endcell + 1; start++)
+			    document.getElementById(element + start).style.background="#e58282";
+
+		    }
+	    }
+	    
+	html += '</tbody></table></div></div>';
+	html += '<br><a href="#groups" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+
+    // update the main page with commitment schedule page html
+	$( '#main' ).html(html);
+
+    };
 
   // ajax method to GET all the buddies of the logged-in user from backend
   getBuddies = function () {
@@ -457,6 +515,25 @@ var sb_index = function () {
     });
   };
 
+  // ajax method to GET all the members of a group from backend
+    getMembers = function (all) {
+    // reinitialize groups to an empty array
+	members = [];
+
+	    $.ajax({
+		url: 'api/get_members.php?gid='+username+'',
+		type: 'GET',
+		async: false,
+		dataType: 'json',
+		success: function (data) {
+		    for (var i = 0; i < data.length; i++) {
+			groups[i] = data[i];
+		    }
+		}
+	    });
+
+    }; 
+
   postSchedule = function (sname) {
     var sid;
     $.ajax({
@@ -542,13 +619,15 @@ var sb_index = function () {
 	  else if(newHash === '#addbuddy')
 	    showAddBuddyPage();
 	  else if (newHash.substr(0,20) === '#schedules?username=') {
-	      uname = newHash.substr(newHash.indexOf('=')+1);
+	      var uname = newHash.substr(newHash.indexOf('=')+1);
 	      showScheduleSelectPage(uname);
 	  }
 	  else if (newHash === '#createschedule')
 	    showCreateSchedulePage();
 	  else if (newHash.substr(0,15) === '#schedules?sid=')
 	    showSchedulePage();
+          else if(newHash.substr(0, 13) === '#members?gid=')
+	    showMembersPage();
           else if (newHash === '#createcommitment')
 	    showCreateCommitmentPage();
 	  else if (newHash === '#groups')
