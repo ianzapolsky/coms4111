@@ -384,7 +384,6 @@ var sb_index = function () {
   };
 
   showMembersPage = function () {
-	  refreshCalendar();
 	  // makes the schedule appear
 	  document.getElementById('calendar').style.display="block";
 
@@ -412,6 +411,7 @@ var sb_index = function () {
             + ' </tr>'
             + '</thead> <tbody>';
 
+      refreshCalendar();
 	    // goes through each member of the group
 	    for (var i = 0; i < members.length; i++){
 	        var m = members[i];
@@ -505,11 +505,9 @@ var sb_index = function () {
 	    + '<div class="col-sm-10">';
 
 	getSchedules(username);
-	alert("number of schedules = " + schedules.length);
 	// goes through each schedule
 	for (var i = 0; i < schedules.length; i++){
 	    var s = schedules[i];
-	    alert("number of commitments = " + commitments.length);
 	    getCommitments(s.SID);
 	    // adds each member's commitments in schedules to the calendar
 		for(var c = 0; c < commitments.length; c++){
@@ -525,6 +523,9 @@ var sb_index = function () {
       html += '<div class="form-group"><div class="col-sm-offset-2 col-sm-10"><br>'
       html += '<button id="commitment-submit" type="submit" class="btn btn-default">Create Invite</button>'
 	html += '</div></div></form>';
+	html += '</tbody></table></div></div>';
+	html += '<br><a href="#schedules?username='+username + '" class="btn btn-lg btn-default">&lArr; Go Back</a></div>';
+
 
     // update the main page with schedule select page html
 	$( '#main' ).html(html);
@@ -773,6 +774,7 @@ var sb_index = function () {
   };
 
   changePage = function (newHash) {
+      refreshCalendar();
 	  document.getElementById('calendar').style.display="none";
 	  if (newHash === '#buddies')
 	    showBuddyPage();
@@ -805,6 +807,7 @@ var sb_index = function () {
   };
 
   init = function (session_username) {
+      refreshCalendar();
       document.getElementById('calendar').style.display="none";
     // set the username associated with the session
 	  username = session_username;

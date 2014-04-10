@@ -64,7 +64,10 @@
               <a href="#invites" class="dropdown-toggle" data-toggle="dropdown">Invites <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="#invites">View Invites</a></li>
+		<li><a href="#createinvite">Send Invite</a></li>
+
               </ul>
+
             </li>
           </ul>
 
