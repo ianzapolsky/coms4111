@@ -40,7 +40,7 @@ var sb_index = function () {
           + '<h2>Welcome, '+username+'!</h2>'
           + '<ul class="list-unstyled" style="margin-left: 20px;">'
             +'<li><h2><a href="#buddies">Buddies</a></h2></li>'
-	          +'<li><h2><a href="#schedules">Schedules</a></h2></li>'
+	          +'<li><h2><a href="#schedules?username='+username+'">Schedules</a></h2></li>'
 	          +'<li><h2><a href="#groups">Groups</a></h2></li>'
           + '</ul>'
         + '</div>'
@@ -122,8 +122,8 @@ var sb_index = function () {
 	  }); 
   };
 
-  showScheduleSelectPage = function () {
-	  getSchedules(username);
+  showScheduleSelectPage = function (uname) {
+	  getSchedules(uname);
 	  var html = String() 
       + '<div class="jumbotron">'
       + '<h3>' + username + '\'s Schedules</h3><br>'
@@ -386,13 +386,15 @@ var sb_index = function () {
 
   changePage = function (newHash) {
 	  //document.getElementById('calendar').style.display="none";
-
-	if (newHash === '#buddies')
+	  if (newHash === '#buddies')
 	    showBuddyPage();
 	  else if(newHash === '#addbuddy')
 	    showAddBuddyPage();
-	  else if (newHash === '#schedules')
-	    showScheduleSelectPage();
+	  else if (newHash.substr(0,20) === '#schedules?username=') {
+      uname = newHash.substr(newHash.indexOf('=')+1);
+      console.log(uname);
+	    showScheduleSelectPage(uname);
+    }
 	  else if (newHash === '#createschedule')
 	    showCreateSchedulePage();
 	  else if (newHash.substr(0,15) === '#schedules?sid=')
